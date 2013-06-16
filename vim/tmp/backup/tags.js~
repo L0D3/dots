@@ -1,0 +1,12 @@
+var positions={};
+$('#tag').live('pageinit', function() {
+    $.getJSON("http://powerful-fjord-3738.herokuapp.com/positions.json", function(data){
+        var output = '';
+        $.each(data, function(index, value){
+            positions[""+value.id+""]=value;
+            output += '<option value="'+value.id+'">'+value.name+'</option>';
+        });
+        $('#position').append(output).selectmenu('refresh',true);
+    });
+});
+

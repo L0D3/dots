@@ -1,0 +1,11 @@
+<div class="span2">
+  <ul class="nav nav-list well">
+  <li>
+    <%= link_to "Übersicht", patents_path %>
+    </li>
+  </ul>
+</div>
+
+<div class="span10">
+<%= render 'form' %>
+</div>

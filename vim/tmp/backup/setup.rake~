@@ -1,0 +1,73 @@
+# encoding: utf-8
+require "rake"
+task :create_controls => :environment do
+  puts "create_controls..."
+  Patent.all.each do |patent|
+    unless patent.anmeldedatum.blank? 
+      puts "#{patent.internaktenzeichen}:"
+      years=Date.today.year-patent.anmeldedatum.year+1
+      puts years.to_s
+      start=patent.anmeldedatum.year 
+      years.times do
+        puts "start #{start.to_s}"
+        patent.create_controls(start)
+        start=start+1
+      end
+    end
+    end
+    puts "done."
+  end
+task :create_reports=>:environment do
+  Report.all.each do |r|
+    r.destroy
+  end
+  Control.all.each do |c|
+    c.create_reports
+  end
+end
+task :add_nations =>:environment do
+  Nation.all.each do |n|
+    n.destroy
+  end
+  Nation.create(:name=>"Deutschland",:short=>"de")
+  Nation.create(:name=>"Europa",:short=>"eu")
+  Nation.create(:name=>"Spanien",:short=>"sp")
+  Nation.create(:name=>"Frankreich",:short=>"fr")
+  Nation.create(:name=>"China",:short=>"cn")
+  Nation.create(:name=>"Schweiz",:short=>"ch")
+  Nation.create(:name=>"UnitedKingdom",:short=>"uk")
+  Nation.create(:name=>"at",:short=>"at")
+end
+task :update_patent_nations =>:add_nations do
+  Patent.all.each do |p|
+    Nation.all.each do |n|
+      puts p.nationalität.to_s
+      puts n.name.to_s
+      puts n.id
+      p.nation=n if p.nationalität==n.name
+      p.save
+    end
+  end
+  
+end
+task :add_rtypes => :environment do
+ Rtype.all.each do |n|
+    n.destroy
+  end
+
+  Rtype.create(:name=>"Anfrage")
+  Rtype.create(:name=>"1.Erinnerung")
+  Rtype.create(:name=>"2.Erinnerung")
+end 
+task :add_states => :environment do
+  State.all.each do |n|
+    n.destroy
+  end
+  State.create(:name=>"aktiv")
+  State.create(:name=>"inaktiv")
+  State.create(:name=>"Anfrage")
+  State.create(:name=>"1. Erinnerung")
+  State.create(:name=>"2. Erinnerung")
+  State.create(:name=>"Rechnung gestellt")
+  State.create(:name=>"Jahresgebühr zu veranlassen")
+  end

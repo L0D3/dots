@@ -1,0 +1,86 @@
+dots
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Committer: johannes lahann <johannes@jolalap.(none)>
+#
+# On branch master
+#
+# Initial commit
+#
+# Changes to be committed:
+#   (use "git rm --cached <file>..." to unstage)
+#
+#	new file:   installprograms.sh
+#	new file:   markdown/markdownpad-github.css
+#	new file:   new_config/connermcd_dots
+#	new file:   new_config/dotfiles
+#	new file:   new_config/tpope
+#	new file:   vim/.netrwhist
+#	new file:   vim/autoload/pathogen.vim
+#	new file:   vim/backup/.bashrc~
+#	new file:   vim/backup/.gtkrc-2.0~
+#	new file:   vim/backup/.netrwhist~
+#	new file:   vim/backup/.vimrc~
+#	new file:   vim/bundle/FuzzyFinder
+#	new file:   vim/bundle/L9
+#	new file:   vim/bundle/YankRing.vim
+#	new file:   vim/bundle/ack.vim
+#	new file:   vim/bundle/badwolf
+#	new file:   vim/bundle/mayansmoke
+#	new file:   vim/bundle/syntastic
+#	new file:   vim/bundle/tComment
+#	new file:   vim/bundle/tabular
+#	new file:   vim/bundle/vim-coffee-script
+#	new file:   vim/bundle/vim-colors-solarized
+#	new file:   vim/bundle/vim-fugitive
+#	new file:   vim/bundle/vim-haml
+#	new file:   vim/bundle/vim-instant-markdown
+#	new file:   vim/bundle/vim-rails
+#	new file:   vim/bundle/vim-ruby
+#	new file:   vim/bundle/vim-sleuth
+#	new file:   vim/bundle/vim-surround
+#	new file:   vim/bundle/vim-vividchalk
+#	new file:   vim/bundle/vundle
+#	new file:   vim/bundle/xptemplate
+#	new file:   vim/tmp/backup/.bashrc~
+#	new file:   vim/tmp/backup/.netrwhist~
+#	new file:   vim/tmp/backup/.vimrc~
+#	new file:   vim/tmp/backup/UbisPhoto.java~
+#	new file:   vim/tmp/backup/a.tex~
+#	new file:   vim/tmp/backup/blubb.html~
+#	new file:   vim/tmp/backup/da~
+#	new file:   vim/tmp/backup/html.xpt.vim~
+#	new file:   vim/tmp/backup/index.html~
+#	new file:   vim/tmp/backup/installprograms.sh~
+#	new file:   vim/tmp/backup/lua.xpt.vim~
+#	new file:   vim/tmp/backup/rc.xml~
+#	new file:   vim/tmp/backup/test.lua~
+#	new file:   vim/tmp/backup/test.tex~
+#	new file:   vim/tmp/backup/tex.xpt.vim~
+#	new file:   vim/xptemplate_personal_snippets/ftplugin/html/html.xpt.vim
+#	new file:   vim/xptemplate_personal_snippets/ftplugin/lua/da
+#	new file:   vim/xptemplate_personal_snippets/ftplugin/lua/lua.xpt.vim
+#	new file:   vim/xptemplate_personal_snippets/ftplugin/lua/test.lua
+#	new file:   vim/xptemplate_personal_snippets/ftplugin/tex/test.tex
+#	new file:   vim/xptemplate_personal_snippets/ftplugin/tex/tex.xpt.vim
+#	new file:   vim/xptemplate_personal_snippets/ftplugin/xpt/.xpt.vim.xpt.vim.swp
+#	new file:   vim/xptemplate_personal_snippets/ftplugin/xpt/xpt.xpt.vim
+#	new file:   vimrc
+#
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#   (commit or discard the untracked or modified content in submodules)
+#
+#	modified:   new_config/dotfiles (modified content)
+#	modified:   vim/bundle/FuzzyFinder (untracked content)
+#	modified:   vim/bundle/L9 (untracked content)
+#	modified:   vim/bundle/YankRing.vim (untracked content)
+#	modified:   vim/bundle/tComment (untracked content)
+#	modified:   vim/bundle/xptemplate (untracked content)
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	vim/tmp/backup/COMMIT_EDITMSG~

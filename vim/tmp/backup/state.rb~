@@ -1,0 +1,12 @@
+class State < ActiveRecord::Base
+  attr_accessible :control_id, :name
+end
+#state:
+#   0: aktiv
+#   1: inaktiv
+#   2: Anfrage
+#   3: 1 Erinnerung
+#   4: 2 Erinnerung
+#   5: Rechnung gestellt
+#   6: Jahresgebühr zu veranlassen 
+#

@@ -1,0 +1,15 @@
+class CreateReports < ActiveRecord::Migration
+  def change
+    create_table :reports do |t|
+      t.integer :patent_id
+      t.integer :report_type_id
+      t.date :start_date
+      t.string :content
+      t.string :from
+      t.string :to
+      t.date :return_date
+
+      t.timestamps
+    end
+  end
+end

@@ -1,0 +1,690 @@
+#Chapter 1
+
+Exams: 25.07
+
+## what is the internet
+ - millions of hosts=end systems
+ - communication links 
+    + coaxial cable
+    + copper, fiber, radop
+    + transmission rate bandwith
+    + packet switches 
+
+### internet service provider
+ - end systems access internet through defining isps
+ - interconnected isps
+ - classification according to size tier3=local tier2=national ,tier1=global
+
+### protocols
+ - tcp,ip,http,smtp ,,,
+ - control sending, receiving of msgs
+ - __protocols define format, order of messages sent and received among network entities, and actions taken on message transmission or receipt__
+
+### Internet standarts
+ - different components of the internet have to agree on standarts to interoper
+ - IETF: INTERNET engineeering task force develops and promotes such standarts
+ - IETF publishes RFCs (Requests for comments) describing /defining protocols
+
+### Infrastructure that provides services to applications
+ - Web, voip, email...
+ - applications are distributed
+
+### end system provides applic. programming interface to apps
+ - rules for exchanging data between programms
+ - provides service options, analogous to postal service
+
+## network edge
+ - hosts: clients and servers
+ - home-based hosts: desktop computers, laptops, smartphones, tablets
+ - servers often reside in large data centers(web, email)
+ - access networks: physical connection of end systems to first router(=edge router)wired or wireless communictaion links
+
+### network core:
+ - interconnected routers
+ - network of networks
+
+### how to connect end systems to edge router
+ - resident access nets
+ - institutional access networks (school, company)
+ - mobile access network
+
+### Access net: digital subscriber line (DSL)
+ - DSL internet access obtained from local telephone company ISP
+ - market share in Germany 86%
+ - use existing telephone line to DSL access multiplexer(=DSLAM) of phone company
+ - DSLAM usually located in the central office (CO) "Vermittlungsstelle" (or it is an outdoor DSLAM)
+ - data over DSL line goes to Internet
+ - voice over DSL line goes to telephone line
+ - use different frequencies for telephone and Internet data -> splitter separates rec signal & forwards data to DSL modem
+ - DSLAM separates the incoming data/phone signals and translates it into digital format
+ -rates are either limited by isp or because of the distance to CO
+
+### Access net: cable network
+ - makte use of the cable television infrastructure
+ - residence: needs cable modem to exchange data with cable modem termination system
+ - splitter often integrated in cable modem
+ - both optical fibre and coaxial cable are employed (HFC: hybrid fiber coax)
+ - network of cable/fiber attaches homes to isp router
+    + homes share access network to cable headend
+        + transmission rate decreases in case of high traffic
+        + requesteddata packets are sent to all connected participants of a group
+    + unlike DSL, which has didicated access to central office
+
+### Enterprise access networks (eth)
+ - typically used in companies, universities, etc
+ - transimmison rates 
+    + 10 mbps to 100 mbps
+    + 1 gbps, 10 gbps
+ - today, end systems typically connect into ethernet switch
+
+### wireless access networks
+ - wireless access network connects end systems to router
+    + via access point; uses radio signals to transmit data
+    + access point shared by several end systems
+ - distinguish between 
+    + wireless lans(wifi)
+    + wide-are wireless access
+
+### Physical media
+ - __bit:__ sent by propagating electromagnetic waves (analog signal) or optical pulses (digital signal) between transmitter/receiver pairs
+ - __physical link:__ what lies between transmitter & receiver
+ - distinguish:
+    + __guided media:__ signals propagate in solid media: copper,fiber-optic, coaxial
+    + __unguided media:__ signals propagate freely, e.g., radio waves
+ -__twisted pair copper wire:__ two insulated copper wires arranged in regular spiral pattern
+    + least expensive, most commonly used
+    + 10 Mbps to 10 Gbps 
+    + Ethernet, DSL
+ - coaxial cable:
+    + two concentric copper conductors
+    + used for HFC (hybrid fibre coaxial) access via (cable internet)
+ - fiber optic cable:
+    + glass fiber carrying light pulses (digital signal)
+    + high -speed point-to-point transmission (10's-100' s Gbps)
+    + low error rate (immune to electromagnetic noise)
+    + transmitters, receiver, switches, are costly
+    + long distance link (oversea)
+    + prevalent in Internet backbone
+
+### Physical media: radio
+
+#### radio link types
+ - terrestrial radio channel
+    + short distance (Bluetooth)
+    + Lan (WiFi)
+    + cellular access (wide-area wireless access)
+ - satellite links
+    + usef if DSL or cable is not available
+    + transmission rate :10's of Mbps
+    + > 270 msec signal propagation delay (DSL has only 20 ms)
+    + typically using a geostationary satellite
+    + location needs to be in the footprint of the satellite
+    + influenced by meteorological factors
+
+## network core
+ - mesh of interconnected routers
+ - what do routers do ?
+    + packet switching:
+        - hosts run network apps and break application-layer messages into packets
+        - forward packets frome one router to the next, across links on path from source to destination
+        - paclets may be buffered and queue while passing network nodes
+
+### Host: sends packets of data
+
+#### host sending function:
+ - takes application message
+ - breaks into smaller chunks, known as packets, of length __L__ bits (packetization)
+ - transmits packet into access network at transmission rate __R__ (bits/sec)
+    + link transmission rate = link bandwidth
+    + packet transmission delay = __L / R__
+
+### Packet-switching: store and forward mechanism
+ - takes L/R seconds to transmit L-bits packet into link at R bps
+ - __store and forward:__ entire packet must arrive at router before it can be transmitted on next link
+ - end-end delay (2 links with bandwidth R)=2L/R (assuming zero propagation delay)
+
+### Packet-switching: queueing delay, loss
+- routers have one buffer per otgoing link -> store packets that the router is about to send into the link
+- if arrival rate (in bits ) to link exceeds transmission rate of link for a period of time 
+    + packetes will queue, wait to be transmitted on link
+    + packets can be dropped (lost) if memory (buffer) fills up
+
+### Key functions in paket switching
+
+ - __routing:__ determines source destination route taken by packets
+    - routing algoritm
+ -__forwarding:__ move packets from router's input to appropriate router output
+
+### Packet vs. circuit switching
+ - two fundamental approaches for moving data through a network:
+ - in packet-switching network resources are not reserved (no guarantees!)
+    + restaurant analogy: just go there without reservation!
+ - in circuit-switched networks resources are reserved
+    + links are separated into circuit segments
+    + fraction of each links transmission capacity is reserved for the duration of the connection
+    + restaurant analogy: reserve a table in advance!
+ - Packet-switching:
+    + great for bursty data
+        - resource sharing
+        - simpler, no call setup
+    + excessive congestion possible: packet delay and loss
+        - protocols needed for reliable data transfer, congestion control
+    + __Problem:__ how to provide circuit-like behavior
+        - bandwidth guarantees needed for audio/video streaming
+        - still an unsolved problem
+
+### Alternatice core: circuit switching
+ - resources (buffers,links,transmission rate) are reserved for call between source & destination
+ - dedicated resources: no sharing 
+    + circuit-like (guaranteed) constant transmission rate
+ - circuit segment idle if not used by call (no sharing)
+ - no store and forward -> transmission time independent of number of links
+ - commonly used in traditional telephone networks
+
+### Internet structure: network of networks
+ - end systems connect to Internet via access ISPs (internet service providers)
+    + residential, company and university ISPs 
+ - access ISPs in turm must be interconnected
+    + so that any two hosts can send packets to each other 
+ - Solution:
+    + tier1 commercial ISPs: national & international coverage, providers of internet backbone (backbone is the core of the actual internet )
+    + content provider network (e.g. google): private network that connects it data centers to internet, often bypassing tier-1, regional ISPs 
+
+## delay, loss, throughput in networks
+
+### how do loss and delay occur
+ - packets queue in router buffers
+    + packet arrival rate to link exceeds output link transmission rate
+    + packets queue, wait for turn
+    + free available buffers: arriving packets dropped if no free buffers
+### Four sources of packet delay
+ - __dproc: nodal processing__
+    + examine header of packet
+    + check for bit lvl errors
+    + determine output link
+    + typically < 1/100 ms 
+ - __dqueue: queueing delay__
+    + time waiting at output link for transmission
+    + depends on congestion lvl if router
+    + 1/1000 -1 ms
+  - __dtrans: transmission delay__
+    + L: packet length
+    + R: link bandwidth 
+    + dtrans =L/R
+  - __drpob: propagation delay__
+    + d: length of physical link
+    + s: propagation speed in medium (~2x10^8 m/s)
+    + dprop =d/s
+    + in wide are networks: order of milliseconds otherwise negligible
+
+### End-to-End delay
+ - total delay from source to destination
+ - N-1routers on the path between source host and destination host
+ - assume no queueing
+ - assume dproc is processing delay at each router (and source host)
+ - transmission rate out of each router and out of source host is R -> dtrans =L/R (L is size of packet)
+ - propagation delay dprop of each link 
+ - what is the End-to-End delay 
+ - __dend-to-end__ = N(dproc + dtrans + dprop)
+
+### packet loss
+ - queue that precedes the link in buffer has finite capacity
+ - packet arriving to full queue dropped
+ - lost packet may be retransmitted by previous node, by source end system, or not at all
+
+### real internet delays and routes
+ - what do real internet delay & loss look like
+ - traceroute programm: provides delay measurement from source to router along end-end internet path towards destination. For all i:
+    + sends three packets that will reach router i on path towards destination (:=3N packets in total)
+    + router i will return packets to sender
+    + timer intervall between start of transmission and reply (response time)
+
+### Throughput
+ - __throughput:__ rate (bits/time unit) at which bits transferred between sender /receiver
+    + instantaneous: rate at given point in time
+    + average: rate over longer period of time
+    + bottleneck link : link on end-end path that constrains end-end throughput
+
+## Protocol layers
+
+### why layering?
+ - dealing with compley systems
+    + allows to identify the relationship of the complex piece of the system 
+    + modularization eases maintenance, updating of system
+        - e.g chang in gate procedure (say, order in which passengers are boarding) does not affect rest of system
+
+### Network protocols 
+ - application: supporting network applications
+    + FTP, SMTP, HTTP, DNS
+ - transport: process-process data transfer
+    + tcp (guaranteed delivery, congestion control),
+    + udp (connectionless)
+    + transport-layer packets= segments
+ - network: routing of datagrams from source to destination 
+    + ip protocol, routing protocol
+ - link: data transfers between neighboring network elements
+ - physical bits on the wire
+
+### Encapsulation
+ - Packet switches implement only the bottom layers; they are transparent to the hosts and routers! 
+ - Encapsulation increases frame size.
+
+## Network security
+ - not needed
+ 
+## History
+ - not needed
+
+
+# Chapter 2
+
+## Principles of network applications
+
+### Application architecture
+ - client-server architecture
+    + __server:__
+        - always-on host
+        - permanent ip address
+        - data centers for handling large number of requests
+    + __clients:__
+        - communicate with server
+        - may be intermittently connected (interrupts)
+        - may have dynamic ip address
+        - do not communicate diractly with each other
+ - peer-to-peer. e.g file sharing, Internet telephony
+    + no always on server infrastructure required
+    + arbitrary end systems directly communicate (--> peers)
+    + peers request service from other peers, provide service in return to other peers
+        - self scalability - new peers bring new service capacity, as well as new service demands
+    + peers are intermittently connected and change ip addresses
+    + not ISP friendly due to high upstream traffic at residental ISPs
+
+### How do network apps communicate?
+
+#### __process:__ program running within a host
+ - within same host, two processes communicate using inter-process communication (defined by OS)
+ - process in different hosts communicate by exchanging messages
+ - __client process:__ process that initiates communication
+ - __server process:__ process that waits to be contacted
+
+### Socket - Application Programming Interface (API) between Process and Computer Network 
+ - process sends/receives messages to/from its socket 
+ - analogy: process = house, socket = door
+    + sending process shoves message out the door
+    + sending process relies on transport infrastructur on other side of door to deliver message to socket at receiving processg 
+    + socket =API -> app developer can only control few parameters on transport layer side (e.g choice of protocol)
+
+### Addressing processes 
+ - to receive messages, process must have identifier
+ - host device has unique 32-bit IP address
+ - __Q:__ does IP address of host on which process runs suffice for identifying the process?
+    + __A:__ no, many processes can be running on same host
+ - identifier includes both IP address and port numbers associated with process on host
+
+### Choose a Transport Layer Protocol
+ - different transport-layer protocols are offered
+ - choose one that best fits your application's needs
+ - --> different service requirements of apps
+
+### transport service requirements of apps
+ - data loss
+    + some apps (e.g. file tranfer, web transactions) require 100% reliable data tranfer
+    + other apps (e.g. audio,video) can tolerate some loss
+ - timing
+    + some apps (e.g. Internet telephony, interactive games) require low delay to be effective
+ - throughput 
+    + some apps (e.g video streaming) require minimum amount of throughput to be effective 
+    + other apps "elastic apps" make use of whatever throughput they get
+ - security 
+    + provides confidentiality between communication processes 
+    + encryption, end point authentication
+
+### Internet transport protocols services
+ - tcp service
+    + __connection-oriented:__ setup required between client and server processes (handshake)
+    + __reliable transport:__ between sending and receiving process (no errors, no msgs missing proper order)
+    + __congestion control:__ throttle sender when network overloaded (a sercixe for the general welfare of the internet!)
+    + __flow control:__ dynamic control of flow of data (no overflow of receiver 's buffer; speed matching)
+    + __does not provide:__ timing (no delays) minimum throughput guarantee, security
+ - udp service
+    + __unreliable data transfer:__ no guarantee that message will arrive; msgs might be out of order
+    + __does not provide:__ reliability, flow control, congestion control, timing, throughput guarantee , security, or connection setup
+    + --> lightweight transport protocol providing minimal service
+
+### Securing Tcp
+
+#### Tcp $ Udp
+ - no encryption 
+ - cleartext passwds sent into socket, traverse internet in cleartext 
+
+#### SSL (Secure Sockets Layer)
+ - provides encrypted TCP connection with end-point authentication (enhancement for TCP)
+ - apps use SSL libraries (--> include SSL code on both sides of connection)
+ - data travels encrypted from socket to socket
+
+### App-layer protocol defines
+ - types of messages exchanged
+    + e.g. request, response
+ - message syntax
+    + what fields in messages & how fields are delineated
+ - message semantics
+    + meaning of information in fields
+ - rules for when and how processes send & respond to messages
+
+## Web and HTTP
+
+### HTTP overview
+ - uses tcp
+    + client initiates tcp connection (creates socket) to server , port 80
+    + server accepts tcp connection from client
+    + HTTP messages (application-layer protocol messages ) exchanged between browser and Web server
+    + TCP connection closed
+ - HTTP is "stateless"
+    + server maintains no information about past client requests
+
+### HTTP connections
+ - non persistent http
+    + at most one object send over tcp connection
+        - connection then closed
+    + downloading multiple objects requires multiple connections
+ - persistent http
+    + multiple objects can be send over single TCP connection between client,server
+
+### Non-persistent HTTP: response time
+ - __round trip time (rtt):__ time for a message to travel from client to server and back
+ - __HTTP response time:__
+    + one RTT to initiate TCP connection
+    + one RTT for HTTP request and first bytes of HTTP response to return
+    + file transmission time
+    + non persistent HTTP
+    + response time = 2RTT + file transmission time
+
+### Persistent HTTP
+ - non-persistent HTTP issues:
+    + requires 2 RTT per Object
+    + OS overhead for each TCP connection (allocate TCP buffers and keep variables)
+ - persistent HTTP:
+    + server leaves connection open after sending response
+    + subsequent HTTP messages between same client/server send over open connection
+    + client sends requests as soon as it encounters a referenced object
+    + one RTT per referenced objects (once connection)
+
+In HTTP 1.1 all connections are considered persistent unless declared otherwise (but usually timeout after 5 sec to save resources)
+
+...
+
+## FTP
+
+### FTP: the file transfer protocol
+ - transfer file to/from remote host
+ - client/server model  
+    + client: side that init transfer
+    + server: remote host
+ - ftp: RFC 959
+ - ftp uses two parallel TCP connections
+
+### FTP: separate control, data connections
+ - FTP client contacts FTP server at port 21,using TCP
+ - client authorized over control connection
+ - client browses remote directory, sends commands over control connection
+ - when server receives file transfer command, server opens 2nd TCP data connection (for file) to client
+ - after transferring one file, server closes data connection
+ - server opens another TCP data connection to transfer another file
+ - control connection: out of band because it is separate 
+ - FTP server maintains state: current directory earlier authentication
+
+## Electronic mail
+ - three major components:
+    + user agents
+    + mail servers
+    + simple mail transfer protocol: SMTP
+ - User agent
+    + mail reader
+    + composing, editing, reading mail messages
+    + e.g. outlook, thunderbird
+    + outgoing, incoming messages stored on server
+  - mail servers:
+    + mailbox contains incoming messages for users
+    + message queue of outgoing mail messages
+    + smtp protocol: communication between mail servers
+        - client: sending mail server
+        - server: receiving mail server
+### SMTP
+ - uses TCP to reliably transfer email message from client to server, port 25
+ - direct transfer: sending server to receiving server ( --> if server is down, new attempt necessary; messages are not stored at some intermediate mail server)
+ - three phases of transfer
+    + handshaking
+    + transfer of messages
+    + closure
+ - command/response interaction
+    + commands
+    + response: status code and phrase
+ - message must be in 7bit ASCII
+
+### Mail access protocols
+ - sender's user agent can use SMTP to push mail onto sender's mail server
+ - retrieval from server is pull operation (cannot use SMTP) --> mail access protocol
+    + POP: post office protocol: authorization, download
+    + IMAP: internet mail access protocol: more features, including manipulation of stored msgs on server
+    + HTTP: gmail, Hotmail, Yahoo!, Mail, etc
+
+### POP3 protocol
+- authorization phase
+    - client commands:
+        - user: declare username
+        - pass: password
+    - server responses:
+        - +ok
+        - -error
+    - transaction phase, client:
+        - list: list size of msgs
+        - retr: retrieve msgs by number
+        - dele: delete
+        - quit
+
+### POP3 and IMAP
+
+#### more about POP3
+ - previous example uses POP3 download and delete mode
+    + Bob cannot re-read email if he changes client
+ - POP3 download and keep copies of messages on different clients
+ - POP3 is stateless across sessions
+
+
+#### IMAP
+ - keeps all messages in one place at server
+ - allows users to organize messages in folders
+ - keep user state across sessions:
+    + name of folders and mappings between message IDs and folder name
+ - user agent can obtrain only headers of msgs 
+ 
+## DNS: domain name system
+
+### DNS: services, structure
+
+#### DNS services
+- hostname to IP address translation
+- host aliasing
+    + canonical, alias names
+- mail server aliasing
+- load distribution
+    + replicatied Web servers: many IP addresses correspond to one name
+    + --> ordering rotates within each reply
+ 
+### DNS: a distributed, hierarchical database
+ - client wants ip for www.amazon.com
+ - client queries .com DNS server to get amazon.com DNS server
+ - client queries amazon.com DNS server to get IP address for www.amazon.com
+
+#### Local DNS name server
+ - does not strictly belong to hierarchy
+ - each ISP has one, also called default name server
+ - when host makes DNS query, query is sent to its local DNS server
+    + has local cache of recent name-to-address translation pairs (but may be out of date!)
+    + acts as proxy, forwars query into hierarchy
+ 
+### DNS: root name servers
+
+# Chapter 4:
+## Chaptergoals:
+ - principles behind network layer services
+     + network layer service models 
+     + forwarding vs routing
+     + how a router works
+     + routing (path selection)
+     + broadcast, multicast
+ - instantiation, implementation on the internet
+## Network layer:
+ - transport segments from sending to receiving host
+ - on sending side encapsulate segments into datagrams
+ - on receiving side, delivers segments to transport layer
+ - network protocols, in every host router
+ - router examines header fields in all ip datagrams passing through it
+
+## Thow key network layer funktions
+ - forwarding: move packets from router's input to appropriate router output (within router)
+ - routing: determine route taken by packets from source to dest (on network lvl)
+
+## connection setup
+ - after routing and forwarding the 3. important function in some network architectures
+    + e.g ATM
+    + before datagrams flow, two end hosts and intervening routers establish virtual connection
+    + routers along chosen path handshake with each other
+ - network vs transport layer connection service:
+    + __transport__: between two processes running in certain hosts
+    + __network__: between two hosts (may also involve intervening routers in case of VCs)
+
+## connection,connection-less service
+ - network with network-layer connectionless service is called datagram network (e.g the internet)
+ - network with network-layer connection service is called virtual-circuit network
+ - analogous to TCP/UDP connection- oriented / connectionless transport-layer services, but:
+    + __service__: host-to-host
+    + __no choice:__ network provides one or the other
+    + __implementation:__ in network core
+
+## Virtual circuits
+ - VC setup before data can flow (determine path, reserve resources, add forwarding table entries in routers)
+ - after transmission is over: VC teardown
+ - every router on source destination path maintains state for each passing connection (entry in forwarding table)
+ - link, router resources (bandwidth, buffers) may be allocated to VC (dedicated resources = predicatable service)
+
+## VC implementation
+ 1. path from source to destination 
+ 2. VC numbers, one number for each link along path
+ 3. entries in forwarding tables in routers along path
+ - packet belonging to VC carries a VC number (rather than dest address)
+ - VC number can be changed on each link ->  routers replace old VC numbers of traversing packets by new ones (obtained from forwarding table)
+ - why do numbers change?
+    + reduces length of vc numberfield
+    + links do not have to synchronize numbers during setup (choose independently)
+
+## VC: signaling protocols
+ - signaling protocols are used for setup and teardown of VCs (make routers aware of VC) -> add/remove entries in forwarding tables)
+ - setup messages are propagated on special virtual circuit
+ - not used in today's internet
+
+## Datagram vs VC network
+ - __Internet (datagram):__
+    + data exchange among computers
+        - elastic service, no strict timing req
+    + many link types (ehternet, radio satelite,fiber)
+        - different characteristics
+        - uniform service difficult
+    + smart endystems (pcs)
+        - simple inside network, complexity at edge
+  - __ATM (VC):__
+    + evolved from telephony
+    + human conversation:
+        - strict timing, reliability requirements
+        - need for guaranteed service
+    + simple end systems
+        - rotary telephones
+        - complexity inside network
+
+## Datagram networks
+ - no connection setup at network layer
+ - routers: no state about end-to-end connections
+    + no network lvl concept of connection
+ - packetss forwarded using destination host address
+ - 4 billion ip addreses (32 bit),
+ - ip destination address in arriving packet'S header
+
+### (longest) Prefix matching
+when looking for forwarding table entry for given destination address, use longest address prefix that matches desination address
+
+
+
+##...
+
+### In network duplication
+ - flooding: when node receives broadcast packet, sends copy to all neighbors
+    + problems: cycles & broadcast storm since each node 
+ - controlled flooding
+### reverse path forwarding
+ - idea :forward source A packet only if arrives on link that is on shortest path to source A
+### Spanning tree:
+ - idea: get rid of redundant packets(because no cycles in spanning tree)
+ - construct a (minimum) spanning tree
+ - nodes then forward/make copies only along spanning tree
+ - no redundant packets received by any node
+#### Spanning tree: center-based-creation
+ - one router identified as center router
+ - to join:
+    + nodes send unicast join msg to center router
+    + message forwardet until it arrives at a node already belonging to spanning tree -> tree depends on order of messages and choses paths
+
+### Multicasting
+ - idea: deliver packets from one or more senders to a group of receivers
+ - applications : software upgrade,streaming audio,...
+ - problems:
+ - how to address packetif number of receivers is large?
+    - solution 1:
+    - solution 2:
+
+### Multicast routing: Internet Group Management Protocol
+ - how does a receiver join a multicast group? without knowing receivers
+    +
+    +
+### Internet group management protocol:
+     
+### Multicast routing: problem statement:
+ - __goal:__ find a tree or trees connectiong exactly those routers have local mcast group members
+### Approaches for group shared trees
+
+### group-shared center based trees
+ - same like broadcast tree
+ - advantages:
+
+### source based: shortet path tree
+
+### reverse path forwarding
+
+### reverse path forwarding with pruning
+
+### Internet Multicasting routing
+ - DVMRP
+ - PIM
+
+### PIM creating source specific tree
+
+# Chapter 5 Link Layer
+
+## Link Layer: introduction
+
+## Link Layer: context
+
+## Link Layer services
+ - framing, link acess
+ - error detection
+ - error correction
+
+## Internet checksum(review)
+
+## Error detection at link layer
+ - EDC field
+
+### Parity checking
+ - single bit parity
+ - two dimentional bit parity
+
+### Cyclic redundany check

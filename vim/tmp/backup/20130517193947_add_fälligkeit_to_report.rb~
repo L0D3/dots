@@ -1,0 +1,8 @@
+class Adjljljljljl < ActiveRecord::Migration
+  def up
+    add_column :reports,:faelligkeit,:date
+  end
+  def down
+  end
+
+end

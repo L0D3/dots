@@ -1,5 +1,4 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# Basics (hast to be refactored) {{{1
 # for examples
 
 # If not running interactively, don't do anything
@@ -83,21 +82,9 @@ if [ -x /usr/bin/dircolors ]; then
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
-
-
 # Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
@@ -110,11 +97,18 @@ fi
 export PATH=${PATH}:~/adt-bundle-linux-x86_64/sdk/platform-tools
 export PATH=${PATH}:~/sdks/android-sdk-linux/tools
 export PATH=${PATH}:~/bin/
+export PATH=/home/johannes/bin/Sencha/Cmd/3.1.0.256:$PATH
 
-# Alias {{{
+# Alias {{{1
 alias ls='ls --color=auto'
 alias la='ls -la --color=auto'
 alias g="gvim  --remote-silent"
-alias cp='cp -aiv'
+alias v="vim  --remote-silent --servername VIM"
+alias cp='cp -aivr'
 alias rotunde='cd ~/Dropbox/rotunde'
-alias install-script='history| awk "{$1=""; print $0}" > ~/dots/install-script.sh
+alias wgserver='ssh johannes@uni-sb.ath.cx'
+alias testserver='ssh jboss@app'
+alias install-script='history| awk "{$1=""; print $0}" > ~/dots/install-script.sh'
+# Basics {{{1
+export TERM=xterm-256color
+export SENCHA_CMD_3_0_0="/home/johannes/bin/Sencha/Cmd/3.1.0.256"

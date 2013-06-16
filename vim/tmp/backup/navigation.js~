@@ -1,0 +1,97 @@
+//Authentication
+$('#authentication').live('pagecreate', function(e){
+    var email = window.localStorage.getItem("email"); 
+    var password= window.localStorage.getItem("password"); 
+    if (email ===""){
+    $("#login").click(function(e) {
+        window.localStorage.setItem("email",$("#email").val());
+        window.localStorage.setItem("password",$("#email").val());
+        alert("saved");
+        $.mobile.changePage('#start', { transition: "slide"} );
+    });
+    }
+    else {
+        $.mobile.changePage('#start', { transition: "slide"} );
+    }
+
+});
+//Start
+$('#start').live('pagecreate', function(e){
+    $("#logout").click(function(e) {
+        window.localStorage.setItem("email","");
+        window.localStorage.setItem("password","");
+        $.mobile.changePage('#authentication', { transition: "slide"} );
+    });
+});
+//Busstation
+$('#station').live('pagecreate', function(e){
+    nfc.addTagDiscoveredListener(onNfc, success, failure);
+    $("#station_cancel").click(function(e) {
+        $.mobile.changePage('#start', { transition: "slide"} );
+    });
+    $("#station_next").click(function(e) {
+        $.mobile.changePage('#map', { transition: "slide"} );
+    });
+});
+//Tag
+$('#tag').live('pagecreate', function(e){
+    $("#tag_add").click(function(e) {
+        var tag={};
+        tag.code=tagId;
+        tag.position_id=$("#position").val();
+        tags.push(tag);
+        $.mobile.changePage('#station', { transition: "slide"} );
+    });
+});
+$('#map').live('pagecreate', function(e){
+    $("#map_cancel").click(function(e) {
+        $.mobile.changePage('#start', { transition: "slide"} );
+    });
+    $("#station_save").click(function(e) {
+        busstations[cBusstation].tags=tags
+        console.log(JSON.stringify(busstations[cBusstation]));
+    $.ajax({
+        url: "http://powerful-fjord-3738.herokuapp.com/busstations/"+cBusstation,
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(busstations[cBusstation]),
+    });
+    $.mobile.changePage('#start', { transition: "slide"} );
+    tags={};
+    });
+});
+
+
+$('#start').live('pageinit', function() {
+}); 
+$('#tag').live('pagebeforeshow', function() {
+    $('#tagId').val(tagId);
+}); 
+$('#station').live('pagebeforeshow', function() {
+    var output = '';
+    $.each(tags, function(index, value){
+        output += '<li>TagId: '+value.code+', Position: '+positions[value.position_id].name+'</li>';
+    });
+    $('#tags').empty().append(output).listview('refresh');
+});
+
+$('#map').live('pagebeforeshow', function() {
+    mapInit();
+});
+var tags=[];
+var tagId;
+function onNfc(nfcEvent) {
+    activePage = $.mobile.activePage.attr("id");
+    console.log(activePage);
+    if (activePage==="station") {
+        tagId=nfcEvent.tag.id;
+        $.mobile.changePage("#tag",{transition: "pop",role: "dialog"});
+    }
+}
+function success(result) {
+    console.log("Listening for NFC Messages");
+}
+ 
+function failure(reason) {
+    alert("Failed to add NDEF listener");
+}

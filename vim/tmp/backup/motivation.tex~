@@ -1,0 +1,28 @@
+% Chapter 1
+
+\chapter{Aufgabenstellung} % Main chapter title
+
+
+\lhead{Aufgabenstellung} % This is for the header on each page - perhaps a shortened title
+%----------------------------------------------------------------------------------------
+\section{Motivation}
+
+Mit zunehmenden Alter wird es für viele Menschen immer schwieriger am öffentlichen Leben teilzunehmen. Oftmals ist die Ursache dafür fehlende Mobilität. Die Menschen sind nicht mehr in der Lage Auto oder Fahrrad zu nutzen und Taxi ist aus Kostengründen keine wirkliche Alternative.
+Auch im öffentlichen Nahverkehr sind ältere Menschen benachteiligt. Komplizierte Fahrpläne und Tarife sowie unverständliche Fahrkartenautomaten schrecken ab und haben zur Folge, dass nur wenige ältere Menschen den ÖPNV\footnote{Öffentlichen Personen Nahverkehr} nutzen.
+
+Um diese Missstände zu beheben und den Umgang im öffentlichen Verkehrsdienst für ältere Menschen zu vereinfachen wurde das Project "Mobia -Mobil im Alter" ins Leben gerufen. An dem Project beteiligt sind die B2M Software AG, die DFKI GmbH\footnote{Deutsches Forschungszentrum für Künstliche Intelligenz}, das iso-Institut\footnote{Institut für Sozialforschung und Sozialwirtschaft e.V Saarbrücken} ,die Saarbahn GmbH und die ZBB\footnote{Zentrum für Bildung und Beruf Saar GmbH,Burbach}.  Ziel des Projektes ist die Verbesserung der Mobilität des älteren Menschen durch persönliche Unterstützung. Diese erfolgt einerseits durch den Einsatz technischer Hilfsmittel. Andererseits soll der Kunde auch die Möglichkeit haben, direkte persönliche Unterstützung zu erhalten. Dies kann z.B. in Form von Reisebegleitern geschehen.  In dem Projekt soll also eine Kombination von einer altersgerechte Technologie und einer Dienstleistung, aufbauend auf den Alltagserfahrungen älterer Menschen, entwickelt werden.
+
+Im Rahmen des Projektes stehen Mobilitätslotsen zur Verfügung, die die Nutzer an die neue Technologie heranführen, und somit helfen Barrieren zu überwinden und Vorbehalte gegenüber der neuen Technologie abzubauen. Darüber hinaus soll die neue Technologie eine direkte Kommunikation zwischen den älteren Menschen und einem Mobilitätslotsen ermöglichen, um konkrete Fragen und Problem unmittelbar vor Ort zu lösen.
+
+Eine Idee zur Umsetzung besteht darin, globale Identifikationsmerkmale an Haltestellen und Verkehrsmitteln anzubringen, um somit Fahrgäste zu lokalisieren zu können, um ihnen einerseits aktuelle und für sie zugeschnittene Hilfestellung zu bieten und außerdem die Mobilitätslotzen über die aktuelle Situation zu informieren, sodass diese bei Bedarf zur Ünterstützung hinzugezogen werden, bzw. jederzeit als Dienstleistung gebucht werden können.
+Ein Lösungsansatz soll in dieser Arbeit vorgestellt werden.
+%----------------------------------------------------------------------------------------
+\section{Zielsetzung}
+Ziel der vorliegenden Bachelorarbeit ist das Entwerfen sowie die Entwicklung eines Kommunikationsmodells zwischen älteren Verkehrsteilnehmern und Mobilitätslotsen. Dabei soll untersucht werden, ob  QR-Tags bzw. RFID-Tags an Haltestellen angebracht werden können, um diese anstelle von GPS-Daten zur Standortbestimmung zu nutzen. Teil der Aufgabe ist auch eine sinnvolle Lösung für die Montage der Tags zu finden. Dies beinhaltet eine Umsetzung, die dem Fahrgast eine intuitive und benutzerfreundliche Interaktion erlaubt. Zusätzlich muss eine langfristige, alltagstaugliche Lösung für die Instandhaltung der Tags gefunden werden. Dabei ist ein Ziel, ein Konzept zu entwickeln, dass es ermöglicht Crowdsourcing für die Überprüfung der Tags auf Funktionsfähigkeit zu nutzen. Ferner soll für die Positionsbestimmung in Bussen eine Technologie aufbauend auf Bluetoothstrahlern entwickelt werden.
+
+Schließlich soll eine Installationssoftware entwickelt werden, die es ermöglicht, die Identifikationsmerkmale an den Haltestellen bzw. in den Verkehrsmitteln mit dem Verkehrsmodell des Mobiaservice zu verbinden und dabei dem Anwender eine einfache Möglichkeit bieten, die bereits vorhandenen Daten auf Richtigkeit zu überprüfen und gegebenfalls anzugleichen. Beispielsweise soll der Anwender in der Lage sein, die vorhandenen GPS-Daten in einer Kartendarstellung zu kontrollieren und zu bearbeiten. 
+Daneben soll die Applikation eine anderes Userinterface, für die Wartung des Systems beinhalten. Da diese Aufgabe von anderen Nutzern ausgeführt werden soll, muss eine Authentifizierungsmodell umgesetzt werden. Damit die Anwendung flexible einsetzbar ist, soll sie, durch Einbinden des Phonegapframeworks, als eine plattform unabhängige Applikation realisiert werden. 
+
+%----------------------------------------------------------------------------------------
+
+

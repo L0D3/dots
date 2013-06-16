@@ -1,0 +1,17 @@
+require "rake"
+desc "create_reports"
+task :create_reports => :environment do
+  puts "create_reports..."
+  Patent.all.each do |patent|
+    unless patent.anmeldedatum.blank? do
+      puts "#{patent.internaktenzeichen}:"
+      years=Date.today.year-patent.anmeldedatum.year+1
+      start=patent.anmeldedatum.year 
+      years.times do
+        start=start+1
+        patent.create_reports(start)
+      end
+    end
+    end
+    puts "done."
+  end

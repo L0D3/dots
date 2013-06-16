@@ -1,0 +1,22 @@
+
+ <%= simple_form_for @patent, :html => { :class => 'form-horizontal' } do |f| %>
+  <fieldset>
+
+    <%= f.input :internaktenzeichen, :label=>"Internes Aktenzeichen" %>
+    <%= f.input :anmeldedatum %>
+    <%= f.input :amtlaktenzeichen, :label=>"Amtl. Aktenzeichen"%>
+    <%= f.input :titel%>
+    <%= f.association :submitters,:label=>"Anmelder"%>
+    <%= f.input :ihrzeichen, :label=>"Ihr Zeichen"%>
+    <%= f.association :inventors, :label=>"Erfinder"%>
+    <%= f.association :procurators,:label =>"Vertreter" %>
+    <%= f.association :nation %>
+    <%= f.association :patent_type, :as => :radio_buttons%>
+
+    <div class="form-actions">
+      <%= f.submit "Patent speichern",  :class => 'btn btn-primary' %>
+    </div>
+  </fieldset>
+<% end %>
+
+

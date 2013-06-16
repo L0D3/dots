@@ -1,0 +1,125 @@
+class Patent < ActiveRecord::Base
+  include ActionView::Helpers::TextHelper
+#    validates_presence_of  :Lizenzbereitschaft,  :amtlAktenzeichen, :internAktenzeichen, :Titel 
+  after_create { 
+    Patent.where('anmeldedatum_month is null').each do |u|
+    u.anmeldedatum_month = u.anmeldedatum.month
+    u.anmeldedatum_day = u.anmeldedatum.day
+    u.save
+  end
+}
+  scope :sorting, lambda{ |options|
+    attribute = options[:attribute]
+    direction = options[:sorting]
+
+    attribute ||= "id"
+    direction ||= "DESC"
+
+    order("#{attribute} #{direction}")
+  }
+ 
+  
+  has_many :procurations
+  has_many :bills
+  has_many :inventions
+  has_many :submissions
+  has_many :patent_protocols
+  has_many :procurators,    :through => :procurations#Vertreter
+  has_many :inventors,      :through => :inventions #Erfinder
+  has_many :submitters,     :through => :submissions#Anmelder
+  has_many :controls
+  #has_one :state
+  belongs_to :nation
+  belongs_to :ptype
+
+  def create_controls(year)
+    control = self.controls.build do |c|
+      c.ersteerinnerung=ersteerinnerung(year)
+      c.gebührenfälligkeit=gebührenfälligkeit(year)
+      c.rechtsverlust=rechtsverlust(year)
+      c.verspätungsgebühr=verspätungsgebühr(year)
+      c.state=State.all.first
+      c.zweiteerinnerung=zweiteerinnerung(year)
+      c.überwachungsanfrage=anfrage(year)
+      c.preis=preis_für_jahr(year)
+      c.jahresgebühr=jahresgebühr(year)
+    end
+      control.save()
+      puts "control created"
+  end
+  def gebührenfälligkeit(year)  
+    if self.anmeldedatum.year+2 >year
+      then date=self.anmeldedatum.years_since(2).end_of_month
+    else 
+      date=Date.new(year,self.anmeldedatum.month,self.anmeldedatum.day).end_of_month
+    end
+     date
+  end
+
+  #das ist die Frist 
+  def ersteerinnerung(year)
+    gebührenfälligkeit(year).beginning_of_month.advance(:days=>14)
+  end
+  def anfrage(year)
+    gebührenfälligkeit(year).prev_month.beginning_of_month.advance(:days=>14)
+  end
+ 
+  def zweiteerinnerung(year)
+    gebührenfälligkeit(year).beginning_of_month.advance(:days=>14)
+  end
+  def berechne_Erinnerung
+     if(Date.today>ersteerinnerung)
+       return zweiteerinnerung
+     else return ersteerinnerung
+     end
+  end
+
+  def verspätungsgebühr(year)
+    self.gebührenfälligkeit(year).months_since(2) 
+  end
+  def rechtsverlust(year)
+    self.gebührenfälligkeit(year).months_since(6)
+  end
+  def überwachungsanfrage(year)
+      self.gebührenfälligkeit(year).months_ago(3)
+  end
+   def jahresgebühr(year)
+    jahresgebühr=0
+    if  gebührenfälligkeit(year).year-1-self.anmeldedatum.year >0
+      then  jahresgebühr=gebührenfälligkeit(year).year+1-self.anmeldedatum.year 
+    end
+    jahresgebühr.to_s
+  end
+
+def letzte_änderung
+  p=patent_protocols.find(:last)
+  p.time unless p.nil?
+end
+private
+
+def preis(s)
+  if s.nil? or s.anteil.blank?
+    preis_für_jahr
+  else 
+    preis_für_jahr.to_f*0.01*s.anteil 
+  end
+end
+
+def preis_für_jahr(year)
+  fee=Fee.find_by_country(nationalität)
+  if fee.nil?
+    return "Preis für "+jahresgebühr(year)+" nicht definiert!"
+  end
+  if jahresgebühr(year)=="0"
+    "-1"
+  else
+    if fee.send("year_"+jahresgebühr(year)).nil?
+      "Preis für "+jahresgebühr(year)+" nicht definiert!"
+    else
+      fee.send("year_"+jahresgebühr(year)).to_s
+    end
+  end 
+end
+
+end 
+

@@ -1,0 +1,106 @@
+'use strict';
+
+/* Controllers */
+
+function PhoneListCtrl($scope, $http) {
+	// var url1="http://jboss.linda.iwi.uni-sb.de/serene-admin-web/rest/config";
+	var url1="/serene-admin-web/rest/config";
+	// var url2="http://jboss.linda.iwi.uni-sb.de/serene-admin-web/rest/search";
+	var url2="/serene-admin-web/rest/search";
+	$http.get(url1).success(function(data, status) {
+		console.log(data);
+		$scope.search_enabled = true;
+
+		$scope.sreConfigs = data.sreConfigs;
+		$scope.updateObjConfigs = function() {
+			console.log("updateobjconfs");
+			$scope.objectConfigs = $scope.sreConfig.objectConfigs;
+		};
+		$scope.updateSearchModeConfigs = function() {
+			$scope.searchModeConfigs = $scope.objectConfig.searchModeConfigs;
+		};
+		$scope.updateSearch = function() {
+			$scope.search_enabled = false;
+		};
+
+	})
+    .error(function(data, status) {
+					$scope.badSearch = true;
+                    $scope.badSearchMessage="Error: "+status;
+					$scope.entries = [];
+					// console.log(status);
+				});
+	$scope.search = function() {
+		console.log($scope.searchTerm);
+		console.log($scope.sreConfig.name);
+		console.log($scope.objectConfig.objectClass);
+		console.log($scope.searchType);
+
+		$http.post(url2, {
+					"searchMode" : $scope.searchType.searchMode,
+					"objectClass" : $scope.objectConfig.objectClass,
+					"searchString" : $scope.searchTerm,
+					"loc" : {
+						"longitude" : 7.012067,
+						"latitude" : 49.239009,
+						"altitude" : 50.0,
+						"locationAccuracy" : 0.0,
+						"altitudeAccuracy" : 0.0
+					}
+				})
+				.success(
+						function(data, status) {
+							$scope.badSearch = false;
+							$scope.entries = data.entries;
+							if($scope.entries.length == 0) {
+								$scope.badSearch = true;
+                                $scope.badSearchMessage="No items matched your search query!"
+								return;
+							}
+							$scope.weights = [];
+							for (var i = 0; i < $scope.searchType.rankerConfig.pluginConfigs.length; i++) {
+								var weight = {};
+								weight.name = $scope.searchType.rankerConfig.pluginConfigs[i].name;
+								weight.value = $scope.searchType.rankerConfig.pluginConfigs[i].priority * 100;
+								$scope.weights.push(weight);
+							}
+
+						}).error(function(data, status) {
+					$scope.badSearch = true;
+                    $scope.badSearchMessage="Error: "status;
+					$scope.entries = [];
+					// console.log(status);
+				});
+	};
+
+	$scope.updateLocationStores = function() {
+		for ( var i = 0; i < $scope.entries.length; i++) {
+			console.log("scores: 1");
+			for ( var j = 0; j < $scope.entries[i].scores.length; j++) {
+				for ( var k = 0; k < $scope.weights.length; k++)
+					if ($scope.entries[i].scores[j].pluginName == $scope.weights[k].name)
+						$scope.entries[i].scores[j].score = 0.01
+								* $scope.weights[k].value
+								* $scope.entries[i].scores[j].baseScore;
+
+			}
+		}
+
+		// calc entry store
+
+		for ( var i = 0; i < $scope.entries.length; i++) {
+			var add = 0;
+			var mul = 1;
+			for ( var j = 0; j < $scope.entries[i].scores.length; j++) {
+				if ($scope.entries[i].scores[j].operator == "ADD")
+					add = add + $scope.entries[i].scores[j].score;
+				if ($scope.entries[i].scores[j].operator == "MULTIPLY")
+					mul = mul * $scope.entries[i].scores[j].score;
+			}
+			$scope.entries[i].score = add * mul;
+		}
+
+	}
+}
+
+PhoneListCtrl.$inject = [ '$scope', '$http' ];

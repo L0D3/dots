@@ -1,28 +1,29 @@
-" Author: Johannes Lahann 
-"
+" Author: Johannes Lahann
 " Setup {{{1
 set nocompatible
 filetype on
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
-
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'tsaleh/vim-matchit'
+Bundle 'nelstrom/vim-markdown-folding'
+Bundle 'LaTeX-Box-Team/LaTeX-Box'
+Bundle 'Shougo/neocomplcache.vim'
+Bundle 'Shougo/neosnippet'
 Bundle 'gmarik/vundle'
-Bundle 'YankRing.vim'
-Bundle 'vim-scripts/FuzzyFinder'
-Bundle 'vim-scripts/L9'
-Bundle 'mileszs/ack.vim'
 Bundle 'scrooloose/syntastic'
+Bundle 'kien/ctrlp.vim'
 Bundle 'vim-scripts/tComment'
-Bundle 'vim-scripts/xptemplate'
-Bundle 'suan/vim-instant-markdown'
-Bundle 'godlygeek/tabular'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-sleuth'
-Bundle 'tpope/vim-surround'
-Bundle 'vim-ruby/vim-ruby'
 Bundle 'tpope/vim-rails'
-Bundle 'tpope/vim-haml'
-Bundle 'kchmck/vim-coffee-script'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-repeat'
+Bundle 'mileszs/ack.vim'
+" Bundle 'pangloss/vim-javascript'
+" Bundle 'godlygeek/tabular'
+" Bundle 'tpope/vim-sleuth'
+" Bundle 'vim-ruby/vim-ruby'
+" Bundle 'tpope/vim-haml'
 
 " Colorschemes
 Bundle 'tpope/vim-vividchalk'
@@ -35,11 +36,31 @@ syntax on
 set background=dark
 colorscheme badwolf
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
+
+" Navigation {{{1
+
+" Easymotion {{{2
+let g:EasyMotion_mapping_f = ',f'
+let g:EasyMotion_mapping_F = ',F'
+let g:EasyMotion_mapping_w = ',w'
+let g:EasyMotion_mapping_b = ',b'
+
+" split {{{2
+nnoremap <leader>v :vsplit<CR>
+nnoremap <Leader>s :split<CR>
+
+"  CtrlP {{{2
+nnoremap <Leader>o :CtrlPCurWD<CR>
+nnoremap <Leader>t :CtrlPTag<CR>
+nnoremap <Leader>B :CtrlPBuffer<CR>
+nnoremap <Leader>u :CtrlPUndo<CR>
+
 " Basics {{{1
 let mapleader = ","
-let maplocalleader = ",,"
-set foldmethod=marker
+let maplocalleader = "#"
 set hidden
+set number
+set shell=/bin/bash
 set lazyredraw
 set cursorline
 set encoding=utf-8
@@ -49,7 +70,6 @@ set showmode
 set wildmenu
 set autoread
 set backspace=2 "make backspace work like in other apps
-"set fileformats=mac,unix,dos
 set ignorecase
 set incsearch
 set list
@@ -59,6 +79,7 @@ set expandtab
 set wildmode=list:longest,list:full
 set showcmd
 set smartcase
+set autoindent
 set smartindent
 set laststatus=2
 set spelllang=eng
@@ -66,16 +87,15 @@ set tabstop=4
 set timeoutlen=600
 set ttyfast
 set wrapmargin=0
+set clipboard=unnamedplus
 set linebreak
 set display=lastline
 " Backups {{{1
-
 set backup                        " enable backups
 set noswapfile                    " It's 2012, Vim.
 set history=1000
 set undodir=~/.vim/tmp/undo//     " undo files
 set backupdir=~/.vim/tmp/backup// " backups
-
 " Make those folders automatically if they don't already exist.
 if !isdirectory(expand(&undodir))
     call mkdir(expand(&undodir), "p")
@@ -83,8 +103,6 @@ endif
 if !isdirectory(expand(&backupdir))
     call mkdir(expand(&backupdir), "p")
 endif
-
-
 " Gui {{{1
 if has("gui_running")
 	set guioptions-=T
@@ -104,33 +122,19 @@ set guicursor+=i-ci:ver20-iCursor
 
 
 " Mappings {{{1
-"  Learnings {{{2
+ "  Learnings {{{2
 "
-" Ack {{{2
+"  Ack {{{2
 
 nnoremap <leader>a :Ack!<space>
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
 " }}}
-" German Keyboard {{{2
-map ü [
-map! ü [
-map ö (
-map! ö (
-map ä {
-map! ä {
-map ß \
-map! ß \
-map! oe &#x00F6;
-map! Oe &#x00D6;
-map! Ue &#x00DC;
-map! ue &#x00FC;
-map! Ae &#x00C4;
-map! ae &#x00E4;
-map! s# &#x00DF;
+" Latex{{{2
+map <LocalLeader>v :LatexView<CR>
 " Moving arround {{{2
 
-nmap <silent> <leader>ev :e $MYVIMRC<cr>
+nmap <silent> <leader>ev :vnew $MYVIMRC<cr>
 nmap <silent> <leader>sv :so $MYVIMRC<cr>
 " Useful stuff {{{2
 nmap  <leader>p :set invpaste:set paste?
@@ -184,35 +188,60 @@ nnoremap zO zCzO
 
 
 
-" XPtemplate {{{2
-nmap <C-F2> :XPTreload<Cr>
-nmap <silent> ,et :XPTedit<cr>
-command! XPTedit exe ":vnew ~/.vim/xptemplate_personal_snippets/ftplugin/".&ft."/".&ft.".xpt.vim"
-"" Ack {{{
-
-nnoremap <leader>a :Ack!<space>
-let g:ackprg = 'ag --nogroup --nocolor --column'
-
 " Plugins {{{1
-" xptemplate {{{2
-let g:xptemplate_snippet_folders = ['/home/johannes/dots/vim/xptemplate_personal_snippets']
-let g:xptemplate_key='<C-Space>'
-let g:xptemplate_key_pum_only='<LEADER><TAB>'
-imap <C-D> <Tab>
-let g:xptemplate_nav_chancel='<C-d>'
-let g:xptemplate_nav_next='<Tab>'
-let g:xptemplate_to_right='<C-_>'
-let g:xptemplate_goback='<C-g>'
+" neosnippet {{{2
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+" neocomplecache {{{2
+let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_smart_case = 1
+let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 
+" Define dictionary.
+let g:neocomplcache_dictionary_filetype_lists = {
+    \ 'default' : '',
+        \ }
 
+" Define keyword.
+if !exists('g:neocomplcache_keyword_patterns')
+    let g:neocomplcache_keyword_patterns = {}
+endif
+let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplcache#undo_completion()
+inoremap <expr><C-l>     neocomplcache#complete_common_string()
 
+" AutoComplPop like behavior.
+" let g:neocomplcache_enable_auto_select = 1
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" Enable heavy omni completion.
+if !exists('g:neocomplcache_omni_patterns')
+  let g:neocomplcache_omni_patterns = {}
+endif
+let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" CtrlP {{
 " latex- box {{{2
 let g:LatexBox_viewer = 'evince'
-let g:LatexBox_latexmk_options = '-pv'
-let g:LatexBox_latexmk_options="-pdf"
+let g:LatexBox_latexmk_options = '-pvc -pdf'
 let g:LatexBox_output_type="pdf"
 let g:tex_flavor = "latex"
+let g:LatexBox_no_mappings='true'
 
 
 
@@ -240,59 +269,96 @@ nnoremap <leader>H :Gbrowse<cr>
 vnoremap <leader>H :Gbrowse<cr>
 
 " }}}
-" Fuzzy Finder {{{2
-nnoremap '<Space> :FufBookmarkDir<cr>
-nnoremap '.  :FufFileWithCurrentBufferDir<cr>
-nnoremap ''  :b#<cr>
-nnoremap '/  :FufFile /<cr>
-nnoremap 'd  :FufFile $HOME/Dropbox/<cr>
-nnoremap 'f  :FufFile<cr>
-nnoremap 'n  :e $HOME/Dropbox/Notes/markdown/<cr>
-nnoremap 'c  :FufCoverageFile<cr>
-nnoremap 'h  :FufFile $HOME/<cr>
-nnoremap 'j  :FufFile $HOME/.vim/<cr>
-nnoremap 'k  :FufBuffer<cr>
-nnoremap 'l  :FufTag<cr>
-nnoremap 'b  :e! $HOME/.bashrc<cr><cr>
-nnoremap 't  :cd %:p:h<cr>:sh<cr>:cd -<cr>
-nnoremap 'v  :e! $MYVIMRC<cr><cr>
-let g:fuf_file_exclude = '\v\~$|\.(DS_Store|o|exe|dll|bak|orig|swp)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])'
 " Surround.vim {{{2
-let g:surround_42 = "**\r**"
-nnoremap ** :exe "norm v$hS*"<cr>
-nnoremap __ :exe "norm v$hS_"<cr>
-vmap * S*
-vmap _ S_
-" taglist {{{2
-let Tlist_Ctags_Cmd = "/usr/bin/ctags"
-let Tlist_WinWidth = 50
-let Tlist_Use_Right_Window = 1
-let Tlist_File_Fold_Auto_Close = 1
-let Tlist_Auto_Update = 1
-let Tlist_Auto_Highlight_Tag = 1
+" let g:surround_42 = "**\r**"
+" nnoremap ** :exe "norm v$hS*"<cr>
+" nnoremap __ :exe "norm v$hS_"<cr>
+" vmap * S*
+" vmap _ S_
 " tComment {{{2
 let g:tcommentGuessFileType_markdown = 'html'
 
 " Autocommands {{{1
-"au BufWritePost *.tex Latexmk
-au BufRead,BufNewFile *.md set filetype=markdown
+" markdown {{{2
+augroup markdown
+    autocmd!
+    autocmd BufRead,BufNewFile *.md setlocal filetype=markdown
+augroup END
 
-augroup nonvim " {{{2
-   au!
-   au BufRead *.png,*.jpg,*.pdf,*.gif,*.xls*,*.scpt sil exe "!xdg-open " . shellescape(expand("%:p")) ."&" | bd | let &ft=&ft | redraw!
-   " au BufRead *.ppt*,*.doc*,*.rtf sil exe "!xdg-open " . shellescape(expand("%:p")) | bd | let &ft=&ft | redraw!
-   au BufRead *.ppt*,*.doc*,*.rtf let g:output_pdf = shellescape(expand("%:r") . ".pdf")
-   au BufRead *.ppt*,*.doc*,*.rtf sil exe "!$HOME/.bin/pdf " . shellescape(expand("%:p"))
-   au BufRead *.ppt*,*.doc*,*.rtf sil exe "!xdg-open " . g:output_pdf | bd | let &ft=&ft | redraw!
+" java {{{2
+augroup java
+    autocmd!
+    autocmd FileType java setlocal foldmethod=marker
+    autocmd FileType java setlocal foldmarker={,}
+augroup END
+" javascript {{{2
+" augroup javascript
+"     autocmd!
+"     autocmd FileType javascript setlocal foldmethod=marker
+"     autocmd FileType javascript setlocal foldmarker={,}
+" augroup END
+" css {{{2
+augroup css
+    autocmd!
+    autocmd BufNewFile,BufRead *.less setlocal filetype=less
+    autocmd Filetype less,css setlocal foldmethod=marker
+    autocmd Filetype less,css setlocal foldmarker={,}
+augroup END
+" java {{{2
+augroup java
+    autocmd!
+    autocmd FileType java setlocal foldmethod=marker
+    autocmd FileType java setlocal foldmarker={,}
+augroup END
+" latex {{{2
+augroup latex
+    autocmd!
+    autocmd FileType tex setlocal foldmethod=marker
+    autocmd FileType tex setlocal foldmarker={,}
+augroup END
+
+" c {{{2
+augroup c
+    autocmd!
+    autocmd FileType java setlocal foldmethod=marker
+    autocmd FileType java setlocal foldmarker={,}
+augroup END
+" html {{{2
+augroup html
+    autocmd!
+    autocmd Filetype html setlocal foldmethod=inline
+augroup END
+" ruby {{{2
+augroup ruby
+    autocmd!
+    autocmd FileType setlocal foldmethod=syntax
+augroup END
+" vim {{{2
+augroup vim
+    autocmd!
+    autocmd FileType vim setlocal foldmethod=marker
+    autocmd FileType help setlocal textwidth=78
+    autocmd BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
+augroup END
+" configFiles {{{2
+augroup configFiles
+    autocmd!
+    autocmd BufRead,BufNew .bashrc setlocal foldmethod=marker
+augroup END
+
+" nonvim {{{2
+augroup nonvim
+   autocmd!
+   autocmd BufRead *.png,*.jpg,*.pdf,*.gif,*.xls*,*.scpt sil exe "!xdg-open " . shellescape(expand("%:p")) ."&" | bd | let &ft=&ft | redraw!
+   " autocmd BufRead *.ppt*,*.doc*,*.rtf sil exe "!xdg-open " . shellescape(expand("%:p")) | bd | let &ft=&ft | redraw!
+   autocmd BufRead *.ppt*,*.doc*,*.rtf let g:output_pdf = shellescape(expand("%:r") . ".pdf")
+   autocmd BufRead *.ppt*,*.doc*,*.rtf sil exe "!$HOME/.bin/pdf " . shellescape(expand("%:p"))
+   autocmd BufRead *.ppt*,*.doc*,*.rtf sil exe "!xdg-open " . g:output_pdf | bd | let &ft=&ft | redraw!
 augroup end
-
 " Line Return {{{1
-
-" Make sure Vim returns to the same line when you reopen a file.
-" Thanks, Amit
 augroup line_return
-    au!
-    au BufReadPost *
+    autocmd!
+    autocmd BufReadPost *
         \ if line("'\"") > 0 && line("'\"") <= line("$") |
         \     execute 'normal! g`"zvzz' |
         \ endif

@@ -1,0 +1,18 @@
+# encoding : utf-8
+class PdfErinnerung < PdfLetter
+  def initialize(content,subject,from,to,patent,control,view)
+    super(patent,control,view)
+    brief_schriftgröße()
+
+    warning_box2(
+                "FRISTSACHE! Rechtsverfall droht!",
+                "Zurück per Fax an 06881 962256"
+               )
+
+    betreff subject
+    address(from,to)
+    anschreiben content 
+    checkbox_1 
+    checkbox_2
+  end
+end

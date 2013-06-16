@@ -1,0 +1,18 @@
+<%=render :partial=>"/partials/patent_sidebar"%>
+<div class="span10">
+ <%= simple_form_for @control  do |f| %>
+    <%= f.input :überwachungsanfrage%>
+    <%= f.input :ersteerinnerung%>
+    <%= f.input :zweiteerinnerung%>
+    <%= f.input :rechtsverlust%>
+    <%= f.input :gebührenfälligkeit%>
+    <%= f.input :preis%>
+    <%= f.input :jahresgebühr%>
+    <%= f.input :verspätungsgebühr%>
+
+<%= link_to t(:back, :default => "Zurück"), @control, :class => "btn" %>
+      <%= f.submit "Überwachung ändern",  :class => 'btn btn-primary' %>
+<% end %>
+
+
+</div>

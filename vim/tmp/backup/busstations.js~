@@ -1,0 +1,15 @@
+$('#start').live('pageinit', function() {
+    $.getJSON("http://powerful-fjord-3738.herokuapp.com/busstations.json", function(data){
+        var output = '';
+        $.each(data, function(index, value){
+            output += '<li><a href="#station" onclick="saveBusstation('+value.id+','+value.id+')">'+value.name+'</a></li>';
+
+        });
+        $('#autocomplete').empty().append(output).listview('refresh');
+    });
+});
+var cBusstation;
+function saveBusstation(id){
+    cBusstation=id;
+    
+}

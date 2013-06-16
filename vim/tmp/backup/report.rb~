@@ -1,0 +1,9 @@
+class Report < ActiveRecord::Base
+  attr_accessible :content, :from, :patent_id, :report_type_id, :return_date, :start_date, :to, :faelligkeit
+  belongs_to :control
+  belongs_to :rtype
+  validates_uniqueness_of :faelligkeit, :scope => [:patent_id,:type]
+
+
+end
+

@@ -1,0 +1,9 @@
+'use strict';
+
+/* Services */
+var myServices = angular.module('services', ['ngResource']);
+
+myServices.factory('JsonConfig', function($resource){
+  return $resource('http://jboss.linda.iwi.uni-sb.de/serene-admin-web/rest/config',{});
+});
+

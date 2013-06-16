@@ -1,0 +1,49 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span2">
+      <!--Sidebar content-->
+      <label for="Instance Configuration:">Instance Configuration:</label>
+      <select ng-model="orderProp">
+        <option value="name">Mentorbike</option>
+      </select>
+     <label>SRE Configuration:</label>
+      <select ng-model="sreConfig" ng-change="updateObjConfigs()"  ng-options="i.name for i in sreConfigs">
+      </select>
+      <label >Object Configuration:</label>
+      <select ng-disabled="!objectConfigs.length" ng-model="objectConfig" ng-change="updateSearchModeConfigs()" ng-options="i.objectClass for i in objectConfigs">
+      </select>
+      <label >Search Type:</label>
+      <select ng-disabled="!searchModeConfigs.length" ng-change="updateSearch()" ng-model="searchType"  ng-options="i.searchMode for i in searchModeConfigs">
+      </select>
+
+      <label>User:</label>
+      <input ng-model="user">
+      <label>Search Terms:</label>
+      <input ng-model="searchTerm">
+      <button type="button" ng-disabled="search_enabled" ng-click="search()">Search</button>
+      <p>
+      </p>
+
+    </div>
+    <div class="span7">
+      <!--Body content-->
+      <ul class="entries">
+       <li class="thumbnail" ng:repeat="entry in entries | orderBy:'-score'">
+       <b>{{$index+1}}. {{entry.object.name}}({{entry.score}})</b>
+        <ul>
+          <li ng:repeat="score in entry.scores"> {{score.pluginName}}({{score.score}}) <br/>
+            </li>
+        </ul>
+    </li>
+    <li  class="thumbnail" ng-show="badSearch"><b>{{badSearchMessage}}</b></li>
+      </ul>
+    </div>
+    <div class="span3">
+          <div ng-repeat="weight in weights">
+        <label>{{weight.name}}:</label>
+        <input type="range"  ng-model="weight.value" ng-change="updateLocationStores()"/>
+       <input type="text" value="{{weight.value*0.01}}"/>
+      </div>
+      </div>
+  </div>
+</div>
