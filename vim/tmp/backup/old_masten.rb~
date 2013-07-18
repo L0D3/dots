@@ -1,0 +1,3 @@
+class OldMasten < ActiveRecord::Base
+  set_table_name "src_mobia_masten"
+end

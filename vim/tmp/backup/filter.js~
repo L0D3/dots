@@ -1,0 +1,8 @@
+app.filter('range', function() {
+  return function(arr,  upper) {
+    for (var i = 0; i <= upper-1; i++){
+      arr.push(i);
+    }
+    return arr;
+  };
+});

@@ -1,0 +1,12 @@
+<h1>Mathe</h1>
+<h2>{{quest.goal}}</h2>
+<h3>Du hast {{counter}}s Zeit</h3>
+<ul ng-repeat="e in quest.exercises ">
+    <li ng-show="$index==currentExercise">
+        <h3>Aufgabe:</h3>
+        <p>{{e.value}}</p>
+        <h3>Antwort:</h3>
+        <input type="number" ng-model="mathAnswer">
+        <button ng-click="nextExercise(mathAnswer,e.id)">bestätigen</button>
+    </li>
+</ul>

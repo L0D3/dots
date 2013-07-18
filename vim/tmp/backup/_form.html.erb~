@@ -1,22 +1,45 @@
+<%= form_for(@masten) do |f| %>
+  <% if @masten.errors.any? %>
+G    <div id="error_explanation">
+      <h2><%= pluralize(@masten.errors.count, "error") %> prohibited this masten from being saved:</h2>
 
- <%= simple_form_for @patent, :html => { :class => 'form-horizontal' } do |f| %>
-  <fieldset>
-
-    <%= f.input :internaktenzeichen, :label=>"Internes Aktenzeichen" %>
-    <%= f.input :anmeldedatum %>
-    <%= f.input :amtlaktenzeichen, :label=>"Amtl. Aktenzeichen"%>
-    <%= f.input :titel%>
-    <%= f.association :submitters,:label=>"Anmelder"%>
-    <%= f.input :ihrzeichen, :label=>"Ihr Zeichen"%>
-    <%= f.association :inventors, :label=>"Erfinder"%>
-    <%= f.association :procurators,:label =>"Vertreter" %>
-    <%= f.association :nation %>
-    <%= f.association :patent_type, :as => :radio_buttons%>
-
-    <div class="form-actions">
-      <%= f.submit "Patent speichern",  :class => 'btn btn-primary' %>
+      <ul>
+      <% @masten.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
     </div>
-  </fieldset>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :operator %><br />
+    <%= f.text_field :operator %>
+  </div>
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :street %><br />
+    <%= f.text_field :street %>
+  </div>
+  <div class="field">
+    <%= f.label :location %><br />
+    <%= f.text_field :location %>
+  </div>
+  <div class="field">
+    <%= f.label :x %><br />
+    <%= f.text_field :x %>
+  </div>
+  <div class="field">
+    <%= f.label :y %><br />
+    <%= f.text_field :y %>
+  </div>
+  <div class="field">
+    <%= f.label :isMobiaStop %><br />
+    <%= f.check_box :isMobiaStop %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
 <% end %>
-
-

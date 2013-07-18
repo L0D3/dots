@@ -1,0 +1,10 @@
+var service=angular.module('service',[]);
+service.factory('Com',function(){
+    return new CommunicationApi();
+});
+service.factory('Db',function(){
+    return new DBHandler();
+});
+
+
+

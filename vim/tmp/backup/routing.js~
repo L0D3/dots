@@ -1,0 +1,41 @@
+var app = angular.module("app",['angular-gestures','service','ui.map','ui.event']);
+app.config(function ($routeProvider) {
+    $routeProvider
+    .when('/',{
+        templateUrl: "app/views/home.html", 
+        controller:  "HomeCtrl"
+    })
+    .when('/connect',{
+        templateUrl: "app/views/connect.html", 
+        controller:  "ConnectCtrl"
+    })
+    .when('/mycouppons',{
+        templateUrl: "app/views/mycouppons.html", 
+        controller:  "MyCoupponsCtrl"
+    })
+    .when('/mcouppons',{
+        templateUrl: "app/views/monitor-couppons.html", 
+        controller:  "MCoupponsCtrl"
+    })
+    .when('/quests/ssp',{
+        templateUrl: "app/views/quests/ssp.html", 
+        controller:  "QuestSSPCtrl"
+    })
+    .when('/quests/speed',{
+        templateUrl: "app/views/quests/speed.html", 
+        controller:  "QuestSpeedCtrl"
+    })
+    .when('/quests/geocaching',{
+        templateUrl: "app/views/quests/geocaching.html", 
+        controller:  "QuestGeoCtrl"
+    })
+     .when('/quests/math',{
+        templateUrl: "app/views/quests/math.html", 
+        controller:  "QuestMathCtrl"
+    })
+    .otherwise({
+        redirectTo: '/'
+    })
+
+});
+

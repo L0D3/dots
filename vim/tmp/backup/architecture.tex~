@@ -1,0 +1,18 @@
+
+\chapter{Architekture} % Main chapter title
+
+
+\lhead{Architekture} % This is for the header on each page - perhaps a shortened title
+%----------------------------------------------------------------------------------------
+\section{RFID Tags}
+\begin{table}[htb]
+\hskip-3.0cm
+\begin{tabular}{lllllllll}
+\toprule
+Name & Shop & Preis & Wettertauglichkeit & Frequenz & Kompatiblität & Befestigung & Haltestelle & Weiteres \\
+\midrule
+Name & Shop & Preis & Wettertauglichkeit & Frequenz & Kompatiblität & Befestigung & Haltestelle & Weiteres \\
+\bottomrule 
+\end{tabular}
+\caption{RFID-Tags: Übesicht}
+\end{table}

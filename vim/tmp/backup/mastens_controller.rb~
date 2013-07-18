@@ -1,0 +1,30 @@
+module Api
+    module V1
+        class MastensController < ApplicationController
+            respond_to :json
+            def index
+                respond_with Masten.where("name like ?","%#{params[:term]}%").all
+            end
+            def show
+                respond_with Masten.find(params[:id])
+            end
+            def create
+                respond_with Masten.create(params[:masten])
+            end
+            def update
+                @masten= Masten.find(params[:id])
+                unless (params[:masten][:tags].nil?)
+                    params[:masten][:tags].each do |tag|
+                        @masten.tags.create(tag)
+                    end
+                end
+                @masten.x=params[:masten][:x]
+                @masten.y=params[:masten][:y]
+                @masten.save
+            end
+            def destroy
+                respond_with Masten.destroy(params[:id])
+            end
+        end
+    end
+end

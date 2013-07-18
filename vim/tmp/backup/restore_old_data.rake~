@@ -1,0 +1,47 @@
+#encoding: utf-8
+task :restore_old_data =>[:restore_lines,:restore_stops,:restore_masten]do
+end
+task :restore_lines =>:environment do
+   Line.all.each do |l|
+        l.destroy
+    end
+    OldLine.all.each do |ol|
+        a=Line.new do |l|
+            l.line_id=ol.id
+            l.description=ol.description
+            l.line=ol.line
+        end
+        a.save
+    end
+end
+task :restore_stops =>:environment do
+    Stop.all.each do |l|
+        l.destroy
+    end
+    OldStop.all.each do |ol|
+        a=Stop.new do |l|
+            l.stop_type=ol.o[2..-1]
+            l.name=ol.name
+        end
+        a.save
+    end
+end
+
+task :restore_masten =>:environment do
+    Masten.all.each do |l|
+        l.destroy
+    end
+    OldMasten.all.each do |ol|
+        a=Masten.new do |l|
+            l.operator=ol.operator
+            l.street=ol.street
+            l.location=ol.location
+            l.x=ol.x
+            l.y=ol.y
+            l.isMobiaStop=ol.isMobiaStop
+            l.name =ol.name
+            l.number=ol.id
+        end
+        a.save
+    end
+end

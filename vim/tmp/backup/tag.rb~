@@ -1,6 +1,5 @@
 class Tag < ActiveRecord::Base
-  attr_accessible :busstation_id, :code, :position_id, :tag_type_id
-  belongs_to :busstation
-  belongs_to :tag_type
-  belongs_to :position_type
+  belongs_to :masten
+  belongs_to :tagType
+  attr_accessible :code
 end

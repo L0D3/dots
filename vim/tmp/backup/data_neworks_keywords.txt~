@@ -1,0 +1,26 @@
+# Chapter 1: roadmap
+
+## what is the internet?
+
+### hosts,end systems, communication links, bandwitdth=transmission rate, packet switches, internet service provider(isp), protocols, internet standarts, IETF, RFCS,
+
+## network edge
+
+### hosts, home-based, servers, non traditional end syste^ms, access networks, network core, how to connect end systems to edge router?,digital subscriber line(DSL). DSLAM, CMTS, HFC, cable network, home network,enterprise access networks, wireless networks, wide area, bit, physical link, guided media, unguided media, twisted pair copper wire, coaxial cable, fiber optic cable, radio link types, terrestrial radio channels, satellite links,
+
+## network core
+
+### what do routers do, packet-switching, transmission rate, packet transmission delay,store and forward, queueing and loss, routing, forwading, packet switching, circuit switching, FDM, TDM, internet structure,tier1 , content provider network,
+
+## delay, loss, throughput in networks,
+
+### packets queue, four sources of packet delay , dnodal=dproc+ dqueue+ dtrans+ dprop., dend-to-end=N(dproc+ dtrans+dprop), packet loss, throughput, instantious, average, bottlenet link
+
+## protocol layers, service models, 
+
+### protocol layers, netowrk applications, transport, network , link, pysical,encapsulation
+
+## security
+
+### 
+

@@ -38,24 +38,26 @@ colorscheme badwolf
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
 " Navigation {{{1
-
+" Buffer {{{2
+nnoremap <Left> <C-w><C-h>
+nnoremap <Right> <C-w><C-l>
+nnoremap <Down> :bp<CR>
+nnoremap <Up> :bn<CR>
 " Easymotion {{{2
-let g:EasyMotion_mapping_f = ',f'
-let g:EasyMotion_mapping_F = ',F'
-let g:EasyMotion_mapping_w = ',w'
-let g:EasyMotion_mapping_b = ',b'
-
+let g:EasyMotion_mapping_f = 'f'
+let g:EasyMotion_mapping_F = 'F'
+let g:EasyMotion_mapping_w = 't'
+let g:EasyMotion_mapping_b = 'T'
 " split {{{2
 nnoremap <leader>v :vsplit<CR>
 nnoremap <Leader>s :split<CR>
-
 "  CtrlP {{{2
 nnoremap <Leader>o :CtrlPCurWD<CR>
 nnoremap <Leader>t :CtrlPTag<CR>
 nnoremap <Leader>B :CtrlPBuffer<CR>
 nnoremap <Leader>u :CtrlPUndo<CR>
-
 " Basics {{{1
+set mouse=a;
 let mapleader = ","
 let maplocalleader = "#"
 set hidden
@@ -369,4 +371,3 @@ let g:module = system('echo -n "$MODULE"')
 
 nnoremap -md :w!<cr>:exe "!pandoc --latex-engine=pdflatex  -o $HOME/Dropbox/Notes/pdf/" . fnameescape(expand('%:t:r')) . ".pdf " . fnameescape(expand('%:p'))<cr>
 nnoremap -mp :w!<cr>:exe "!pandoc --latex-engine=pdflatex  -o /tmp/" . fnameescape(expand('%:t:r')) . ".pdf " . fnameescape(expand('%:p')) . " && xdg-open /tmp/" . fnameescape(expand('%:t:r')) . ".pdf"<cr>
-

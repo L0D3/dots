@@ -1,12 +1,13 @@
 //Authentication
-$('#authentication').live('pagecreate', function(e){
+$( document ).delegate("#authentication", "pageinit", function() {
+    console.log("authentication");
     var email = window.localStorage.getItem("email"); 
     var password= window.localStorage.getItem("password"); 
     if (email ===""){
     $("#login").click(function(e) {
+        console.log("login");
         window.localStorage.setItem("email",$("#email").val());
         window.localStorage.setItem("password",$("#email").val());
-        alert("saved");
         $.mobile.changePage('#start', { transition: "slide"} );
     });
     }
@@ -16,7 +17,7 @@ $('#authentication').live('pagecreate', function(e){
 
 });
 //Start
-$('#start').live('pagecreate', function(e){
+$( document ).delegate("#start", "pageinit", function() {
     $("#logout").click(function(e) {
         window.localStorage.setItem("email","");
         window.localStorage.setItem("password","");
@@ -24,7 +25,8 @@ $('#start').live('pagecreate', function(e){
     });
 });
 //Busstation
-$('#station').live('pagecreate', function(e){
+
+$( document ).delegate("#station", "pageinit", function() {
     nfc.addTagDiscoveredListener(onNfc, success, failure);
     $("#station_cancel").click(function(e) {
         $.mobile.changePage('#start', { transition: "slide"} );
@@ -34,7 +36,7 @@ $('#station').live('pagecreate', function(e){
     });
 });
 //Tag
-$('#tag').live('pagecreate', function(e){
+$( document ).delegate("#tag", "pageinit", function() {
     $("#tag_add").click(function(e) {
         var tag={};
         tag.code=tagId;
@@ -43,31 +45,41 @@ $('#tag').live('pagecreate', function(e){
         $.mobile.changePage('#station', { transition: "slide"} );
     });
 });
-$('#map').live('pagecreate', function(e){
+$( document ).delegate("#map", "pageinit", function() {
     $("#map_cancel").click(function(e) {
         $.mobile.changePage('#start', { transition: "slide"} );
     });
     $("#station_save").click(function(e) {
+        console.log("Busstations:"+busstations);
         busstations[cBusstation].tags=tags
         console.log(JSON.stringify(busstations[cBusstation]));
     $.ajax({
-        url: "http://powerful-fjord-3738.herokuapp.com/busstations/"+cBusstation,
+        'beforeSend': function(xhr) {
+            //May need to use "Authorization" instead
+            xhr.setRequestHeader("Authorization",
+                "Basic " + btoa("mobias:secret"));
+        },
+
+        url: "http://sheltered-everglades-9379.herokuapp.com/api/mastens/"+cBusstation,
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify(busstations[cBusstation]),
     });
     $.mobile.changePage('#start', { transition: "slide"} );
-    tags={};
+    tags=[];
     });
 });
 
 
-$('#start').live('pageinit', function() {
+$( document ).delegate("#start", "pagebeforeshow", function() {
+    tags=[];
+    cBusstation=null;
+    busstations=[];
 }); 
-$('#tag').live('pagebeforeshow', function() {
+$( document ).delegate("#tag", "pagebeforeshow", function() {
     $('#tagId').val(tagId);
 }); 
-$('#station').live('pagebeforeshow', function() {
+$( document ).delegate("#station", "pagebeforeshow", function() {
     var output = '';
     $.each(tags, function(index, value){
         output += '<li>TagId: '+value.code+', Position: '+positions[value.position_id].name+'</li>';
@@ -75,7 +87,10 @@ $('#station').live('pagebeforeshow', function() {
     $('#tags').empty().append(output).listview('refresh');
 });
 
-$('#map').live('pagebeforeshow', function() {
+$( document ).delegate("#map", "pagehide", function() {
+    console.log("gggggggggggggggggggg");
+});
+$( document ).delegate("#map", "pagebeforeshow", function() {
     mapInit();
 });
 var tags=[];

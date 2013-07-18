@@ -1,0 +1,5 @@
+class AddDirectionToMastens < ActiveRecord::Migration
+  def change
+      add_column :mastens, :direction, :string
+  end
+end

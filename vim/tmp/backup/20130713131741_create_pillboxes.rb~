@@ -1,0 +1,14 @@
+class CreatePillboxes < ActiveRecord::Migration
+  def change
+    create_table :pillboxes do |t|
+      t.boolean :fgu
+      t.boolean :bench
+      t.string :pane
+      t.string :advertising
+      t.boolean :electricity
+      t.integer :masten_id
+
+      t.timestamps
+    end
+  end
+end

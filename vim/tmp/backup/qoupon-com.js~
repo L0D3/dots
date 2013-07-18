@@ -1,0 +1,459 @@
+var loadingScreen = false;
+var ingameLoadingScreen = false;
+function CommunicationApi() {
+	this.messageBox = function(msg) {
+		console.log("messagebox");
+		navigator.notification.alert(msg);
+	}
+	this.LoadingScreen = function(show, msg) {
+		if (show) {
+			document.getElementById("loader").style.display = 'block';
+			document.getElementById("loader_text").textContent = msg;
+			loadingScreen = true;
+
+		} else {
+			document.getElementById("loader").style.display = 'none';
+			loadingScreen = false;
+		}
+	}
+	this.IngameLoadingScreen = function(show) {
+		if (show) {
+			document.getElementById("ingame-loader").style.display = 'block';
+			ingameLoadingScreen = true;
+
+		} else {
+			document.getElementById("ingame-loader").style.display = 'none';
+			IngameLoadingScreen = false;
+		}
+	}
+	// variables:
+	this.mb = new MessageBuilder();
+	this.m_con = null; //initialized if socket connection to a neabry monitor is established
+	this.s_con = new ServerConnection(this);
+	this.refreshUI = null; //initialized if a gui is set which should get updated
+	this.refreshMap = null; //initialized if a gui is set which should get updated
+	this.refreshPersonMap = null; //initialized if a gui is set which should get updated
+	this.endQuest = null; //initialized if a gui is set which should get updated
+	this.data = {};
+	// inner classes
+
+	/**
+	 * A factory that create valid JSON strings
+	 * for the socket communication with a monitor
+	 */
+	function MessageBuilder() {
+		this.createDefaultMessage = function(_msg) {
+			return JSON.stringify({
+				action : "msg",
+				msg : ""
+			});
+		}
+		//        this.createGetCodeRequest = function(_cid) {
+		//            return JSON.stringify({action: "c_get", msg: _cid});
+		//        }
+		this.createCouponSyncRequest = function() {
+			return JSON.stringify({
+				action : "c_sync",
+				msg : ""
+			});
+		}
+		this.createQuestStartRequest = function(_cid) {
+			return JSON.stringify({
+				action : "QUEST_START",
+				msg : _cid
+			});
+		}
+		this.createGeoResponse = function(_quest) {
+			var _latitude = (_quest.latitude !== undefined) ? _quest.latitude
+					: 0.0;
+			var _longitude = (_quest.longitude !== undefined) ? _quest.longitude
+					: 0.0;
+			var _code = (_quest.code !== undefined) ? _quest.code : "";
+			return JSON.stringify({
+				action : "QUEST_RESP",
+				msg : _quest.cid,
+				latitude : _latitude,
+				longitude : _longitude,
+				code : _code
+			});
+		}
+		//this.debug = 1;   //DEBUG
+		this.createSpeedResponse = function(_quest) {
+			var _latitude = (_quest.latitude !== undefined) ? _quest.latitude
+					: 0.0;
+			var _longitude = (_quest.longitude !== undefined) ? _quest.longitude
+					: 0.0;
+			//DEBUG
+			/*if (this.debug == 1) {
+				_latitude = 49.733;
+				_longitude = 6.9;
+				this.debug++;
+			} else {
+				_latitude = 48.44;
+				_longitude = 6.9;
+			}*/
+			////////
+			return JSON.stringify({
+				action : "QUEST_RESP",
+				msg : _quest.cid,
+				latitude : _latitude,
+				longitude : _longitude
+			});
+		}
+		this.createCalcSolutionResponse = function(_cid, _solutions) {
+			return JSON.stringify({
+				action : "QUEST_RESP",
+				msg : _cid,
+				solutions : _solutions
+			});
+		}
+		this.createSSPSelectionResponse = function(_cid, _selection) {
+			return JSON.stringify({
+				action : "QUEST_RESP",
+				msg : _cid,
+				selection : _selection
+			});
+		}
+		this.createKillQuest = function(_cid) {
+			return JSON.stringify({
+				action : "QUEST_KILL",
+				msg : _cid
+			});
+		}
+	}
+
+	/**
+	 * A quest representation
+	 */
+	function Quest(json, com) {
+		//global
+		this.cid = json["cid"];
+		this.type = json["type"];
+		this.goal = json["goal"];
+		this.info = "";
+
+		//calc
+		this.exercises = json["exercises"];
+		this.targetCount = json["targetCount"];
+
+		//geo 
+		this.code = "";
+		this.target = new Object();
+		this.target["latitude"] = json["latitude"];
+		this.target["longitude"] = json["longitude"];
+
+		//geo
+		this.places = json["places"]; //array of goals: name / latitude / longitude
+		this.distance = 999999; //distance in m
+
+		//ssp
+		this.rounds = json["rounds"];
+		this.ready = json["ready"];
+		this.player = json["player"];
+		this.points = 0;
+
+		//speed + geo
+		this.interval = json["interval"];
+		this.latitude = 0.0;
+		this.longitude = 0.0;
+		this.current_value_timer = null;
+		this.geo_location_timer = null;
+
+		//calc + geo + speed
+		this.time = json["time"];
+
+		this.sendPatternResponse = function() {
+			if (com.m_con.quest.type == "GEO") {
+				com.m_con.send(com.mb.createGeoResponse(com.m_con.quest));
+			} else if (com.m_con.quest.type == "SPEED") {
+				com.m_con.send(com.mb.createSpeedResponse(com.m_con.quest));
+			}
+			com.refreshUI("");
+		}
+
+		this.toString = function() {
+			return "Quest := cid:" + this.cid + " type:" + this.type + " goal:"
+					+ this.goal + " exercises:" + this.exercises + " pattern:"
+					+ this.pattern + " code:" + this.code + " rounds:"
+					+ this.rounds + " ready:" + this.ready + " interval:"
+					+ this.interval + " time:" + this.time;
+		}
+
+		this.getCurrentPositionTimer = function() {
+			navigator.geolocation.getCurrentPosition(function(p) {
+				com.m_con.quest.latitude = p.coords.latitude;
+				com.m_con.quest.longitude = p.coords.longitude;
+                com.refreshPersonMap();
+			}, function(err) {
+				console.log("Could not retrieve geolocation");
+			});
+		}
+
+		this.start = function() {
+
+			if (this.ready !== undefined && this.ready == false) {
+				com.LoadingScreen(true, "Suche Gegner ..."); //<-- debug
+			} else if (this.ready !== undefined && this.ready == true) {
+				com.LoadingScreen(false,
+						"Wir haben jemanden gefunden. Los gehts!"); //<-- debug
+				com.refreshUI("quests/ssp");
+			}
+
+			//switch UI to according page
+			if (this.interval !== undefined && this.interval != null) {
+				this.geo_location_timer = window.setInterval(
+						this.getCurrentPositionTimer, this.interval * 1000);
+				this.current_value_timer = window.setInterval(
+						this.sendPatternResponse, this.interval * 1000);
+			}
+			console.log("Started the following quest..." + this.toString());
+		}
+
+		this.stop = function(kill) {
+			if (this.current_value_timer != null) {
+				window.clearInterval(this.current_value_timer);
+				this.current_value_timer = null;
+			}
+			if (this.geo_location_timer != null) {
+				window.clearInterval(this.geo_location_timer);
+				this.geo_location_timer = null;
+			}
+			
+			if (kill !== undefined && kill == true) {
+				com.m_con.send(com.mb.createKillQuest(this.cid));
+			}
+			com.m_con.quest = null;
+		}
+	}
+
+	/**
+	 * This object describes an instance of a valid and established socket connection to
+	 * a monitor.
+	 * 
+	 * It provides the following information:
+	 * 	getMonitor() - Returns the monitor object to which you are currently connected
+	 *  getCoupons() - Returns alle coupons that are available on the connected monitor
+	 *  send(string) - sends a message to the connected monitor (PLEASE USER mb AS MASSAGE FACTORY)
+	 */
+	function MonitorConnection(monitor, com) {
+
+		var wsuri = "ws://" + monitor.ip + ":" + monitor.port;
+		this.monitor = monitor;
+		this.coupons = [];
+		this.sock = new WebSocket(wsuri);
+		this.quest = null;
+		this.info = null;
+
+		this.getCoupon = function(cid) {
+			var i = 0;
+			var found = false;
+			while (!found && i < this.coupons.length) {
+				if (this.coupons[i].id == cid) {
+					return this.coupons[i];
+				}
+				i++;
+			}
+			return null;
+		}
+
+		this.sock.onopen = function() {
+			console.log("connected to " + wsuri);
+			com.m_con.send(com.mb.createCouponSyncRequest());
+		}
+
+		this.sock.onclose = function(e) {
+			if (this.quest != null) {
+				this.quest.stop(true);
+				this.quest = null;
+			}
+			console.log("Connection to monitor has been closed (" + e.code
+					+ ")");
+			refreshUI("/");
+			//TODO: close this instance of m_con 
+		}
+
+		/**
+		 * HANDLE INCOMING SOCKET MESSAGES
+		 */
+		this.sock.onmessage = function(e) {
+			logcat.i("<---- IN: " + e.data);
+			var msg_json = JSON.parse(e.data);
+			var action = msg_json["action"];
+
+			switch (action) {
+			case "c_sync":
+				com.data.couppons = msg_json.coupons;
+				com.m_con.coupons = msg_json.coupons;
+				com.refreshUI("mcouppons");
+				break;
+			case "c_get":
+				var new_coupons = new Array();
+				com.messageBox("Gutscheincode: " + msg_json["msg"]);
+				break;
+			case "QUEST_START":
+				if (com.m_con.quest != null) {
+					com.m_con.quest.stop(false);
+				}
+				com.m_con.quest = new Quest(msg_json, com);
+				com.m_con.quest.start();
+
+				switch (com.m_con.quest.type) {
+				case "SPEED":
+					com.refreshUI("quests/speed");
+					break;
+				case "GEO":
+					com.refreshUI("quests/geocaching");
+					break;
+				case "CALC":
+					com.refreshUI("quests/math");
+					break;
+				default:
+					break;
+				}
+				break;
+			case "QUEST_END":
+				com.endQuest(msg_json.success, msg_json.code);
+				break;
+			case "QUEST_STATE":
+				if (com.m_con.quest != null && com.m_con.quest.type == "SSP" && msg_json.code == "1") {
+					com.IngameLoadingScreen(false);
+					com.m_con.quest.points = msg_json.reason;
+					com.m_con.quest.info = "";
+				} else if (com.m_con.quest != null && com.m_con.quest.type == "SPEED") {
+					com.m_con.quest.places = msg_json.places;
+				} else if (com.m_con.quest != null && com.m_con.quest.type == "GEO") {
+					com.m_con.quest.distance = parseFloat(msg_json.reason);
+				} else {
+					if (com.m_con.quest != null) {
+						com.m_con.quest.info = msg_json.reason;
+						if (com.m_con.quest.ytep == "SSP")
+							com.IngameLoadingScreen(true);
+					} else {
+						com.m_con.info = msg_json.reason;
+					}
+				}
+				com.refreshUI("");
+				break;
+			default:
+				console.log("I have no idea, how to handle this action: "
+						+ msg_json["action"]);
+			}
+		}
+
+		this.send = function(_msg) {
+			var msg = _msg;
+			logcat.d("OUT ----> :" + msg);
+			try {
+				this.sock.send(msg);
+			} catch (e) {
+				logcat.e(e);
+			}
+		};
+
+		this.getMonitor = function() {
+			return this.monitor;
+		}
+
+		this.getCoupons = function() {
+			return this.coupons;
+		}
+	}
+
+	/**
+	 * This object describes an instance of a valid and connection to
+	 * our central webservice (and database)
+	 * 
+	 * It provides you the following features:
+	 * 	 findNearbyMonitors(lat, long, dist) - checks if there are any monitors within the given radius around the geo point (lat, long)
+	 *   getPID() - Returns the unique identifier of this phone
+	 */
+	function ServerConnection(com) {
+		/**
+		 * The json array that contains all available monitors found in the given radius
+		 * (MSID => (name, distance in km))
+		 */
+
+		/**
+		 * Default radius (150 m => 0.15 km)
+		 */
+		this.default_distance = 0.15;
+
+		/**
+		 * The hardware ID of this device
+		 */
+		this.pid = null;
+		
+		/**
+		 * My current position when searching monitors
+		 */
+		this.pos = new Object();
+
+		/**
+		 * This method find neabry monitors within a given range.
+		 * if no lat and long vaues were set (null) the real GPS data is used.
+		 * if no distance if given (null), the default value is used.
+		 */
+		this.findNearbyMonitors = function(lat, long, dist) {
+			com.LoadingScreen(true, "Suche Monitore");
+			var pid = this.getPID();
+			var latitude;
+			var longitude;
+			var distance;
+			this.pos['latitude'] = lat;
+			this.pos['longitude'] = long;
+
+			if (lat != null && long != null) {
+				latitude = lat;
+				longitude = long;
+			} else {
+				com
+						.messageBox("Ihre Position konnte nicht korrekt bestimmt werden. GPS Lokalisierung aktiviert?");
+				return;
+			}
+
+			if (dist == null) {
+				distance = this.default_distance;
+			} else {
+				distance = dist;
+			}
+
+			//Requesting nearby monitors from webservice
+			$
+					.get(
+							'http://uni-sb.ath.cx/ubimedia2013/core_phone.php?pid='
+									+ pid + '&action=FIND_M&lat=' + latitude
+									+ '&long=' + longitude + '&dist='
+									+ distance, function(data) {
+								// SUCCESS
+								com.LoadingScreen(false, "");
+								com.data.monitors = JSON.parse(data);
+								com.refreshUI("");
+							})
+					.fail(
+							function() {
+								com
+										.messageBox("Es wurden keine Monitore in deiner Nähe gefunden.");
+							});
+		}
+
+		/**
+		 * Checks if msid belongs to one of the nearby monitors that have been found.
+		 * If yes, a new socket connection is established to this monitor and the var m_con is initiated for global use
+		 */
+		this.connectToMonitor = function(monitor) {
+			console.log(JSON.stringify(monitor));
+			com.m_con = new MonitorConnection(monitor, com);
+			console.log(com.m_con);
+		}
+
+		/**
+		 * Singleton return of this phone's hardware ID
+		 */
+		this.getPID = function() {
+			if (this.pid == null)
+				this.pid = device.uuid;
+			return this.pid;
+		}
+	}
+
+}

@@ -1,6 +1,17 @@
 var positions={};
-$('#tag').live('pageinit', function() {
-    $.getJSON("http://powerful-fjord-3738.herokuapp.com/positions.json", function(data){
+$(document).delegate("#tag",'pagebeforeshow', function() {
+    console.log("gm");
+    $.ajax({
+        'beforeSend': function(xhr) {
+            //May need to use "Authorization" instead
+            xhr.setRequestHeader("Authorization",
+                "Basic " + btoa("mobias:secret"));
+        },
+        url: "http://sheltered-everglades-9379.herokuapp.com/api/positions",
+        dataType: "json",
+        type:"GET"
+    })
+    .then(function (data) {
         var output = '';
         $.each(data, function(index, value){
             positions[""+value.id+""]=value;

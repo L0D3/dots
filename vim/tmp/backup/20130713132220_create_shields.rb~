@@ -1,0 +1,12 @@
+class CreateShields < ActiveRecord::Migration
+  def change
+    create_table :shields do |t|
+      t.boolean :shield
+      t.boolean :fis
+      t.boolean :wastebasket
+      t.booleanmasken_id :ticketmachine
+
+      t.timestamps
+    end
+  end
+end

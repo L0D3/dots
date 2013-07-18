@@ -1,18 +1,82 @@
-<%=render :partial=>"/partials/patent_sidebar"%>
-<div class="span10">
- <%= simple_form_for @control  do |f| %>
-    <%= f.input :überwachungsanfrage%>
-    <%= f.input :ersteerinnerung%>
-    <%= f.input :zweiteerinnerung%>
-    <%= f.input :rechtsverlust%>
-    <%= f.input :gebührenfälligkeit%>
-    <%= f.input :preis%>
-    <%= f.input :jahresgebühr%>
-    <%= f.input :verspätungsgebühr%>
 
-<%= link_to t(:back, :default => "Zurück"), @control, :class => "btn" %>
-      <%= f.submit "Überwachung ändern",  :class => 'btn btn-primary' %>
-<% end %>
 
+<div class="row">
+    <div class="span2">
+        <ul class="nav nav-list">
+            <li class="nav-header">Navigation:</li>
+            <li><a href="#general" data-toggle="tab">Generell:</a></li>
+            <li><a href="#fitout" data-toggle="tab">Haltestellenausbau:</a></li>
+            <li><a href="#pillbox" data-toggle="tab">Fahrgastunterstand:</a></li>
+            <li><a href="#shield" data-toggle="tab">Haltestellenschild:</a></li>        
+            <li><a href="#images" data-toggle="tab">Bilder:</a></li>        
+        </ul>
+    </div>
+    <div class="span9">
+
+                <%= simple_form_for @masten  do |f| %>
+        <div class="tab-content">
+            <div class="tab-pane active" id="general">
+                     <div class="form-horizontal">
+                    <fieldset>
+                        <%= f.input :name ,:label=>"Name"%>
+                        <%= f.input :direction ,:label=>"Richtung"%>
+                        <%= f.input :operator, :label=>"Typ"%>
+                        <%= f.input :street, :label=>"Straße"%>
+                        <%= f.input :location, :label=>"Ort"%>
+                        <%= f.input :x, :label=>"Latitude"%>
+                        <%= f.input :y, :label =>"Longitude"%>
+                        <%= f.input :isMobiaStop,:label =>"Bereits Mobiapunkt?"%>
+
+                    </fieldset>
+                    </div>
+            </div>
+            <div class="tab-pane" id="fitout">
+                <%= f.simple_fields_for :mastenFitout  do |b|%>
+                    <div class="form-horizontal">
+                        <%= b.input :bay,:label=>"Haltestellenbucht"%>
+                        <%= b.input :surrounding,:label=>"Fahrbahnrand"%>
+                        <%= b.input :buscape, :label=>"Kaphaltestelle"%>
+                        <%= b.input :handicaped, :label=>"Behindertengerecht"%>
+                        <%= b.input :stripe, :label=>"Taktiler Leitstreifen"%>
+                    </div>
+                <%end%>
+            </div>
+            <div class="tab-pane" id="pillbox">
+
+                <%= f.simple_fields_for :pillbox do |b|%>
+                    <div class="form-horizontal">
+                        <%= b.input :fgu,:label=>"FGU insg."%>
+                        <%= b.input :bench,:label=>"Sitzbank"%>
+                        <%= b.input :advertising, :label=>"Werbung"%>
+                        <%= b.input :pane, :label=>"Seitenscheibe"%>
+                        <%= b.input :electricity, :label=>"Stromanschluss"%>
+                    </div>
+                <%end%>
+            </div>
+
+            <div class="tab-pane" id="shield">
+                <%= f.simple_fields_for :shield do |b|%>
+                    <div class="form-horizontal">
+                        <%= b.input :shield,:label=>"ST 5 - Schild"%>
+                        <%= b.input :fis,:label=>"FIS - Säule insg."%>
+                        <%= b.input :wastebasket, :label=>"Papierkorb(ZKE)"%>
+                        <%= b.input :ticketmachine, :label=>"Fahrkartenautomat"%>
+                    </div>
+                <%end%>
+            </div>
+            <div class="tab-pane" id="images">...</div>
+            <div class="form-actions">
+                <%= f.submit "Speichern", :class => 'btn btn-primary' %>
+                <%= link_to 'Abbrechen', masten_path, :class => 'btn' %>
+                <% end %>
+            </div>
+        </div>
+    </div>
 
 </div>
+
+<script>
+    $(function () {
+        $('#myTab a:last').tab('show');
+    })
+</script>

@@ -1,11 +1,5 @@
-<div class="span2">
-  <ul class="nav nav-list well">
-  <li>
-    <%= link_to "Übersicht", patents_path %>
-    </li>
-  </ul>
-</div>
+<h1>New line</h1>
 
-<div class="span10">
 <%= render 'form' %>
-</div>
+
+<%= link_to 'Back', lines_path %>

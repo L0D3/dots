@@ -189,12 +189,12 @@
 
 \thesistitle{Thesis Title} % Your thesis title - this is used in the title and abstract
 %-------------------------------------------------  
-\supervisor{Dr. Jan \textsc{Alexandersson}} % You supervisor's name - this is used in the title page
+\supervisor{Dr. Jan Alexandersson} % You supervisor's name - this is used in the title page
 %-------------------------------------------------   
 %-------------------------------------------------   
 \degree{Bachelor der Informatik} % Your degree name - this is currently used in the title page and abstract
 %-------------------------------------------------   
-\authors{Johannes \textsc{Lahann}} % Your name - this is used in the title page and abstract
+\authors{Johannes Lahann} % Your name - this is used in the title page and abstract
 %-------------------------------------------------   
 %-------------------------------------------------   
 \subject{} % Your subject area - this is not currently used anywhere in the template, cite it with \subjectname if you want it
@@ -378,6 +378,8 @@
     \cleardoublepage
 }\end{spacing}
 }
+\usepackage{changepage}
+
 \newcommand\listsymbolname{Abbreviations}
 \usepackage{longtable}
 \newcommand\listofsymbols[2]{

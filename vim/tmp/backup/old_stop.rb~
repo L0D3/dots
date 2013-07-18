@@ -1,0 +1,3 @@
+class OldStop < ActiveRecord::Base
+  set_table_name "src_mobia_stops"
+end

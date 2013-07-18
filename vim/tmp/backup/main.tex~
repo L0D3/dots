@@ -46,7 +46,7 @@
 \end{minipage}
 \begin{minipage}{0.4\textwidth}
 \begin{flushright} \large
-\emph{Supervisor:} \\
+\emph{Betreuer:} \\
 \href{http://www.dfki.de/~janal/}{\supname} % Supervisor name - remove the \href bracket to remove the link  
 \end{flushright}
 \end{minipage}\\[3cm]
@@ -213,6 +213,7 @@
 % Uncomment the lines as you write the chapters
 
 \input{./Content/motivation}
+\input{./Content/architecture}
 %\input{./Content/goal}
 %\input{./Chapters/Chapter2} 
 %\input{./Chapters/Chapter3}

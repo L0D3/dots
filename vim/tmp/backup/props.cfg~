@@ -1,0 +1,7 @@
+[default]
+dbid = 9
+password = debug
+port = 9000
+
+[optional]
+ip = 10.8.0.17

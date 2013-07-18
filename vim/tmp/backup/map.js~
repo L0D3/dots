@@ -1,31 +1,115 @@
-function mapInit(){
-$('#map_canvas').gmap().bind('init', function(event, map) { 
-		$('#map_canvas').gmap('addMarker', {
-			'position':map.center, 
-			'draggable': true, 
-			'bounds': false
-		}, function(map, marker) {
-		}).dragend( function(event) {
-		})
+var lat;
+var lng;
+navigator.geolocation.getCurrentPosition (function (pos)
+{
+   lat = pos.coords.latitude;
+   lng = pos.coords.longitude;
 });
+function mapInit(){
+
+ var poi = "33.89342,-84.30715",
+        poimg = "http://www.findthebestcarprice.com/public/images/how-to-buy-a-car.png";
+
+    var map = new google.maps.Map(document.getElementById('map_canvas'), {
+        zoom: 17,
+        center: new google.maps.LatLng(cBusstationy,cBusstationx),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var pos, marker, content, infowindow, positionMarker;
+
+    infowindow = new google.maps.InfoWindow();
+
+
+    pos = new google.maps.LatLng(cBusstationy, cBusstationx);
+    marker = new google.maps.Marker({
+        position: pos,
+        map: map,
+		draggable: true, 
+        animation: google.maps.Animation.DROP
+    });
+// $('#map_canvas').gmap().dragend( function(event) {
+//             console.log(busstations[cBusstation].x+","+busstations[cBusstation].y);
+//             busstations[cBusstation].y=event.latLng.jb;
+//             busstations[cBusstation].x=event.latLng.kb;
+//             console.log(busstations[cBusstation].x+","+busstations[cBusstation].y);
+// 		});
+      var pinColor = "0000FF";
+    var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+            new google.maps.Size(21, 34),
+            new google.maps.Point(0,0),
+            new google.maps.Point(10, 34));
+    console.log("Koords:"+ cBusstationx+","+cBusstationy);
+    if (lat){
+             positionMarker=new google.maps.Marker({
+			position:new google.maps.LatLng(lat,lng), 
+             map: map,
+			draggable: false, 
+			bounds: false,
+            icon: pinImage
+		});
+    }
+    content = '<div>'+busstations[cBusstation].number+'<div style="font-weight:normal;font-size:x-small"></div></div>';
+
+    infowindow = new google.maps.InfoWindow({
+        content: content
+    });
+    google.maps.event.addListener(marker, "dragend", function(event) {
+         console.log(busstations[cBusstation].x+","+busstations[cBusstation].y);
+            busstations[cBusstation].y=event.latLng.jb;
+            busstations[cBusstation].x=event.latLng.kb;
+            console.log(busstations[cBusstation].x+","+busstations[cBusstation].y);
+
+    });
+    google.maps.event.addListener(marker, 'click', (function(marker) {
+        return function() {
+            infowindow.open(map, marker);
+        };
+    })(marker));
+
 }
 
-function findLocation(location, marker) {
-	$('#map_canvas').gmap('search', {'location': location}, function(results, status) {
-		if ( status === 'OK' ) {
-			$.each(results[0].address_components, function(i,v) {
-				if ( v.types[0] == "administrative_area_level_1" || 
-					 v.types[0] == "administrative_area_level_2" ) {
-					$('#state'+marker.__gm_id).val(v.long_name);
-				} else if ( v.types[0] == "country") {
-					$('#country'+marker.__gm_id).val(v.long_name);
-				}
-			});
-			marker.setTitle(results[0].formatted_address);
-			$('#address'+marker.__gm_id).val(results[0].formatted_address);
-			openDialog(marker);
-		}
-	});
-}
+    $(window).bind('resize', function () {
+        var screenHeight= 0;        
+        screenHeight= $('[data-role="page"]').first().height() - $('[data-role="header"]').first().height()- $('[data-role="footer"]').first().height();
+            $('#map_canvas').css('height',screenHeight - 4);
+    }).trigger('resize');
+//     var pinColor = "0000FF";
+//     var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+//             new google.maps.Size(21, 34),
+//             new google.maps.Point(0,0),
+//             new google.maps.Point(10, 34));
+//     console.log("Koords:"+ cBusstationx+","+cBusstationy);
+//     if (lat){
+//         console.log("initMap");
+//         $('#map_canvas').gmap().bind('init', function(event, map) { 
+//             var positionMarker=new google.maps.Marker({
+// 			'position':new google.maps.LatLng(lat,lng), 
+//             'map':
+// 			'draggable': false, 
+// 			'bounds': false,
+//             'icon': pinImage
+// 		}
+//         });
+// }
+// $('#map_canvas').gmap().bind('init', function(event, map) { 
+//     $('#map_canvas').gmap('option', 'zoom', 18);
+//     $('#map_canvas').gmap('option', 'center', new google.maps.LatLng(cBusstationy,cBusstationx));
+// $('#map_canvas').gmap('clear','markers');
+//     $('#map_canvas').gmap('addMarker', {
+// 			'position':new google.maps.LatLng(cBusstationy,cBusstationx), 
+// 			'draggable': true, 
+// 			'bounds': false
+// 		}, function(map, marker) {
+// 		}).dragend( function(event) {
+//             console.log(busstations[cBusstation].x+","+busstations[cBusstation].y);
+//             busstations[cBusstation].y=event.latLng.jb;
+//             busstations[cBusstation].x=event.latLng.kb;
+//             console.log(busstations[cBusstation].x+","+busstations[cBusstation].y);
+// 		})
+// });
+// }
+// 
+
 
 
