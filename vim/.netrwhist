@@ -1,9 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
-let g:netrw_dirhist_1='/home/johannes/shared/Dropbox/Bachelorarbeit/implementation/phonegap-install-tags/assets/www/js'
-let g:netrw_dirhist_2='/home/johannes/shared/Dropbox/Bachelorarbeit/implementation/tag_reader_request'
-let g:netrw_dirhist_3='/home/johannes/shared/Dropbox/Bachelorarbeit/implementation/phonegap-test-tag/platforms/android/res/xml'
-let g:netrw_dirhist_4='/home/johannes/dots/vim/bundle/.neobundle/doc'
-let g:netrw_dirhist_5='/home/johannes/dots/vim/bundle/.neobundle'
-let g:netrw_dirhist_6='/home/johannes/shared/svn/arbeit/serene/mCiudad-intern/SeReNe/branches/kommit-refactored/mentorbike-app'
-let g:netrw_dirhist_7='/home/johannes/shared/svn/arbeit/serene/mCiudad-intern/SeReNe/branches/kommit-refactored/kommit-app'

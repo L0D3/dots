@@ -1,8 +1,0 @@
-<div class="mycouppons">
-    <h1>Meine Qoupons</h1>
-     <ul class"list">
-        <li ng-click="loadCoupon(coupon)" ng-repeat="coupon in myCoupons">
-        <p>CID:{{coupon.cid}}; Name:{{coupon.name}}; Owner:{{coupon.owner}}; Bonus:{{coupon.bonus}}; Code:{{coupon.code}}</p>
-        </li>
-      </ul>
-</div> 

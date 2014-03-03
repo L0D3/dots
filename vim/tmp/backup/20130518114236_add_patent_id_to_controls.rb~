@@ -1,4 +1,0 @@
-class AddPatentIdToControls < ActiveRecord::Migration
-  def change
-  end
-end

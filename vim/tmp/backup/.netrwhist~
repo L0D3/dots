@@ -1,4 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
-let g:netrw_dirhist_1='/home/johannes/Dropbox/Bachelorarbeit/implementation/mobia-rails/app/controllers/api'
-let g:netrw_dirhist_2='/home/johannes/Dropbox/Bachelorarbeit/implementation/mobia-rails/app/controllers/api/v2'

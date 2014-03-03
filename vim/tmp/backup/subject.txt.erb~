@@ -1,4 +1,0 @@
-Überwachungsanfrage für ihre Patentanmeldung <%=@patent.amtlaktenzeichen%> vom <%=@patent.anmeldedatum.strftime("%d.%m.%Y")%>
- Anmelder: 
- "<%=@patent.titel%>"
-

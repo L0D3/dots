@@ -1,3 +1,0 @@
-class OldLine < ActiveRecord::Base
-    set_table_name "src_mobia_lines"
-end

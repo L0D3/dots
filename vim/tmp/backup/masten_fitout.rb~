@@ -1,3 +1,0 @@
-class MastenFitout < ActiveRecord::Base
-  attr_accessible :bay, :buscape, :handicaped, :stripe, :surrounding
-end

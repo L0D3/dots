@@ -1,4 +1,0 @@
-class Nation < ActiveRecord::Base
-  attr_accessible :name,:short,:id
-  has_many :patents
-end

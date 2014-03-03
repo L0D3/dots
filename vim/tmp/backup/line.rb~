@@ -1,3 +1,0 @@
-class Line < ActiveRecord::Base
-  attr_accessible :description, :id, :line_id
-end

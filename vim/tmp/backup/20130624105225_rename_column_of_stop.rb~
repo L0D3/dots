@@ -1,8 +1,0 @@
-class RenameColumnOfStop < ActiveRecord::Migration
-  def up
-    rename_column :stop, :type, :stop_type
-  end
-
-  def down
-  end
-end

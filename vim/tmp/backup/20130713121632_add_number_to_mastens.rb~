@@ -1,7 +1,0 @@
-class AddNumberToMastens < ActiveRecord::Migration
-  def change
-      add_column :mastens, :number, :string
-      add_column :mastens:, :abbreviation, :string
-      add_column :mastens: :room_id, :integer
-  end
-end

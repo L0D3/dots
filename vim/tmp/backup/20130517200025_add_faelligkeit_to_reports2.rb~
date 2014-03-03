@@ -1,5 +1,0 @@
-class AddFaelligkeitToReports2 < ActiveRecord::Migration
-  def up
-    addcolumn :reports, :faelligkeit, :date
-  end
-end

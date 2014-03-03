@@ -1,4 +1,0 @@
-function initDB() {
-    console.log("initDb");
-    var db = window.openDatabase("db", "1.0", "DB", 1000000);
-}

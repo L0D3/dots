@@ -1,5 +1,0 @@
-class Tag < ActiveRecord::Base
-  belongs_to :masten
-  belongs_to :tagType
-  attr_accessible :code
-end

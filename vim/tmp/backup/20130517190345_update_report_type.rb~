@@ -1,9 +1,0 @@
-class UpdateReportType < ActiveRecord::Migration
-  def up
-    add_column :reports, :type,:string
-    remove_column :reports,:report_type_id,:integer
-  end
-
-  def down
-  end
-end
